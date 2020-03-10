@@ -1,0 +1,270 @@
+[
+  {
+    "commune": "Las Condes",
+    "neighbors": [
+      "Providencia",
+      "Vitacura",
+      "La Reina",
+      "Lo Barnechea",
+      "Peñalolen"
+    ]
+  },
+  {
+    "commune": "Providencia",
+    "neighbors": [
+      "Vitacura",
+      "Las Condes",
+      "Recoleta",
+      "Ñuñoa",
+      "Santiago",
+      "La Reina"
+    ]
+  },
+  {
+    "commune": "Vitacura",
+    "neighbors": [
+      "Recoleta",
+      "Providencia",
+      "Las Condes",
+      "Lo Barnechea",
+      "Huechuraba"
+    ]
+  },
+  {
+    "commune": "La Reina",
+    "neighbors": ["Las Condes", "Providencia", "Ñuñoa", "Peñalolen"]
+  },
+  {
+    "commune": "Lo Barnechea",
+    "neighbors": ["Vitacura", "Las Condes"]
+  },
+  {
+    "commune": "Peñalolen",
+    "neighbors": ["Las Condes", "La Reina", "Ñuñoa", "Macul", "La Florida"]
+  },
+  {
+    "commune": "Recoleta",
+    "neighbors": [
+      "Huechuraba",
+      "Vitacura",
+      "Providencia",
+      "Santiago",
+      "Independencia",
+      "Conchalí"
+    ]
+  },
+  {
+    "commune": "Ñuñoa",
+    "neighbors": [
+      "Providencia",
+      "La Reina",
+      "Peñalolen",
+      "Macul",
+      "San Joaquín",
+      "Santiago"
+    ]
+  },
+  {
+    "commune": "Santiago",
+    "neighbors": [
+      "Providencia",
+      "Ñuñoa",
+      "San Joaquín",
+      "San Miguel",
+      "Pedro Aguirre Cerda",
+      "Estación Central",
+      "Quinta Normal",
+      "Independencia",
+      "Recoleta"
+    ]
+  },
+  {
+    "commune": "Macul",
+    "neighbors": ["Ñuñoa", "Peñalolen", "La Florida", "San Joaquín"]
+  },
+  {
+    "commune": "La Florida",
+    "neighbors": [
+      "Macul",
+      "Peñalolen",
+      "Puente Alto",
+      "La Pintana",
+      "La Granja",
+      "San Joaquín"
+    ]
+  },
+  {
+    "commune": "Huechuraba",
+    "neighbors": ["Quilicura", "Conchalí", "Recoleta", "Vitacura"]
+  },
+  {
+    "commune": "Independencia",
+    "neighbors": ["Renca", "Conchalí", "Recoleta", "Santiago", "Quinta Normal"]
+  },
+  {
+    "commune": "Conchalí",
+    "neighbors": [
+      "Quilicura",
+      "Huechuraba",
+      "Recoleta",
+      "Independencia",
+      "Renca"
+    ]
+  },
+  {
+    "commune": "San Joaquín",
+    "neighbors": [
+      "Ñuñoa",
+      "Macul",
+      "La Florida",
+      "La Granja",
+      "San Miguel",
+      "Santiago"
+    ]
+  },
+  {
+    "commune": "San Miguel",
+    "neighbors": [
+      "San Joaquín",
+      "San Ramón",
+      "La Cisterna",
+      "Pedro Aguirre Cerda",
+      "Santiago"
+    ]
+  },
+  {
+    "commune": "Pedro Aguirre Cerda",
+    "neighbors": [
+      "Santiago",
+      "San Miguel",
+      "Lo Espejo",
+      "Cerrillos",
+      "Estación Central"
+    ]
+  },
+  {
+    "commune": "Estación Central",
+    "neighbors": [
+      "Quinta Normal",
+      "Santiago",
+      "Pedro Aguirre Cerda",
+      "Cerrillos",
+      "Maipú",
+      "Pudahuel",
+      "Lo Prado"
+    ]
+  },
+  {
+    "commune": "Quinta Normal",
+    "neighbors": [
+      "Renca",
+      "Independencia",
+      "Santiago",
+      "Estación Central",
+      "Lo Prado",
+      "Cerro Navia"
+    ]
+  },
+  {
+    "commune": "Puente Alto",
+    "neighbors": ["La Florida", "La Pintana"]
+  },
+  {
+    "commune": "La Pintana",
+    "neighbors": [
+      "Puente Alto",
+      "San Bernardo",
+      "El Bosque",
+      "San Ramón",
+      "La Granja",
+      "La Florida"
+    ]
+  },
+  {
+    "commune": "La Granja",
+    "neighbors": ["La Florida", "La Pintana", "San Ramón", "San Joaquín"]
+  },
+  {
+    "commune": "Quilicura",
+    "neighbors": ["Huechuraba", "Conchalí", "Renca", "Pudahuel"]
+  },
+  {
+    "commune": "Renca",
+    "neighbors": [
+      "Quilicura",
+      "Conchalí",
+      "Independencia",
+      "Quinta Normal",
+      "Cerro Navia",
+      "Pudahuel"
+    ]
+  },
+  {
+    "commune": "San Ramón",
+    "neighbors": [
+      "San Miguel",
+      "La Granja",
+      "La Pintana",
+      "El Bosque",
+      "La Cisterna"
+    ]
+  },
+  {
+    "commune": "La Cisterna",
+    "neighbors": ["San Miguel", "San Ramón", "El Bosque", "Lo Espejo"]
+  },
+  {
+    "commune": "Lo Espejo",
+    "neighbors": [
+      "Pedro Aguirre Cerda",
+      "La Cisterna",
+      "San Bernardo",
+      "Cerrillos"
+    ]
+  },
+  {
+    "commune": "Cerrillos",
+    "neighbors": [
+      "Estación Central",
+      "Pedro Aguirre Cerda",
+      "Lo Espejo",
+      "Maipú"
+    ]
+  },
+  {
+    "commune": "Maipú",
+    "neighbors": ["Pudahuel", "Estación Central", "Cerrillos"]
+  },
+  {
+    "commune": "Pudahuel",
+    "neighbors": [
+      "Quilicura",
+      "Renca",
+      "Cerro Navia",
+      "Lo Prado",
+      "Estación Central",
+      "Maipú"
+    ]
+  },
+  {
+    "commune": "Lo Prado",
+    "neighbors": [
+      "Quinta Normal",
+      "Estación Central",
+      "Pudahuel",
+      "Cerro Navia"
+    ]
+  },
+  {
+    "commune": "Cerro Navia",
+    "neighbors": ["Renca", "Quinta Normal", "Lo Prado", "Pudahuel"]
+  },
+  {
+    "commune": "San Bernardo",
+    "neighbors": ["Lo Espejo", "El Bosque", "La Pintana"]
+  },
+  {
+    "commune": "El Bosque",
+    "neighbors": ["La Cisterna", "San Ramón", "La Pintana", "San Bernardo"]
+  }
+]

@@ -1,0 +1,11 @@
+/node_modules
+api-accioncircular2019.pem
+private_key.ppk
+eb-ac.pem
+.env
+/certs
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+

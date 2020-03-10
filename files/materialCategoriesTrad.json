@@ -1,0 +1,14 @@
+[
+  { "category": "tin", "traduction": "Hojalata" },
+  { "category": "pet", "traduction": "PET (Tereftalato de Polietileno)" },
+  { "category": "hdpe", "traduction": "HDPE (Polietileno de alta densidad)" },
+  { "category": "ldpe", "traduction": "LDPE (Polietileno de baja densidad)" },
+  { "category": "pp", "traduction": "PP (Polipropileno)" },
+  { "category": "paperboard", "traduction": "Papel/Cartón" },
+  { "category": "aluminium", "traduction": "Aluminio" },
+  { "category": "glass", "traduction": "Vidrio" },
+  { "category": "tetrapak", "traduction": "Tetra Pak" },
+  { "category": "fabric", "traduction": "Tela"},
+  { "category": "electronics", "traduction": "Electrónicos"}
+
+]

@@ -1,0 +1,335 @@
+[
+  {
+    "name": "Celulosa",
+    "materialID": "CEL",
+    "color": "lightblue",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID": "TREE", 
+        "quantity": 0.017,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID": "WATER",
+        "quantity": 25.5,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID": "PETROL",
+        "quantity": 0.315,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID":"ENERGY",
+        "quantity": 4.1,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID": "CO2",
+        "quantity": 0.9,
+        "unity": "Kg"
+      }
+    ]
+  },
+  {
+    "name": "Plástico",
+    "materialID": "PLASTIC",
+    "color": "KHAKI",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID": "TREE",
+        "quantity": 0,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID": "WATER",
+        "quantity": 39.26,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID": "PETROL",
+        "quantity": 2.604,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID": "ENERGY",
+        "quantity": 5.028,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID": "CO2",
+        "quantity": 1.5,
+        "unity": "Kg"
+      }
+    ]
+  },
+  {
+    "name": "Vidrio",
+    "materialID": "GLASS",
+    "color": "lightgreen",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID": "TREE",
+        "quantity": 0,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID": "WATER",
+        "quantity": 0,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID":"PETROL",
+        "quantity": 0.136,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID":"ENERGY",
+        "quantity": 1.2,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID":"CO2",
+        "quantity": 0.315,
+        "unity": "Kg"
+      }
+    ]
+  },
+  {
+    "name": "Aluminio",
+    "color": "silver",
+    "materialID": "ALUMINIUM",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID":"TREE",
+        "quantity": 0,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID":"WATER",
+        "quantity": 91.2,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID":"PETROL",
+        "quantity": 5.82,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID":"ENERGY",
+        "quantity": 14,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID":"CO2",
+        "quantity": 19,
+        "unity": "Kg"
+      }
+    ]
+  },
+  {
+    "name": "Otros metáles",
+    "materialID": "METALS",
+    "color": "gray",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID":"TREE",
+        "quantity": 0,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID":"WATER",
+        "quantity": 0,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID":"PETROL",
+        "quantity": 0.253,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID":"ENERGY",
+        "quantity": 0.634,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID":"CO2",
+        "quantity": 2.08,
+        "unity": "Kg"
+      }
+    ]
+  },
+  {
+    "name": "Tetra pak",
+    "materialID": "TETRAPAK",
+    "color": "CORNFLOWERBLUE",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID":"TREE",
+        "quantity": 0,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID":"WATER",
+        "quantity": 100,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID":"PETROL",
+        "quantity": 0.221,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID":"ENERGY",
+        "quantity": 3,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID": "CO2",
+        "quantity": 0,
+        "unity": "Kg"
+      }
+    ]
+  },
+  {
+    "name": "Textiles",
+    "materialID": "TEXTILS",
+    "color": "THISTLE",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID":"TREE",
+        "quantity": 0,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID":"WATER",
+        "quantity": 2500,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID":"PETROL",
+        "quantity": 0,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID":"ENERGY",
+        "quantity": 0,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID": "CO2",
+        "quantity": 3.169,
+        "unity": "Kg"
+      }
+    ]
+  },
+  {
+    "name": "Electrónicos",
+    "materialID": "ELECTRONICS",
+    "color": "LAVENDER",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID":"TREE",
+        "quantity": 0.7,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID":"WATER",
+        "quantity": 0,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID":"PETROL",
+        "quantity": 12.9,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID":"ENERGY",
+        "quantity": 0,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID": "CO2",
+        "quantity": 30,
+        "unity": "Kg"
+      }
+    ]
+  },
+  {
+    "name": "Orgánicos",
+    "materialID": "ORGANICS",
+    "color": "TAN",
+    "savesPerKilogram": [
+      {
+        "name": "Árboles",
+        "ID":"TREE",
+        "quantity": 0,
+        "unity": "Un"
+      },
+      {
+        "name": "Agua",
+        "ID":"WATER",
+        "quantity": 0,
+        "unity": "L"
+      },
+      {
+        "name": "Petróleo",
+        "ID":"PETROL",
+        "quantity": 0.221,
+        "unity": "L"
+      },
+      {
+        "name": "Energía",
+        "ID":"ENERGY",
+        "quantity": 3,
+        "unity": "kWatt"
+      },
+      {
+        "name": "Polución CO2",
+        "ID": "CO2",
+        "quantity": 0,
+        "unity": "Kg"
+      }
+    ]
+  }
+]

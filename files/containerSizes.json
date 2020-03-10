@@ -1,0 +1,30 @@
+[
+    {
+        "type":"littleContainer",
+        "height": 65,
+        "width": 48,
+        "profundity": 53,
+        "volume": 80
+    },
+    {
+        "type":"middleContainer",
+        "height": 93,
+        "width": 49,
+        "profundity": 55,
+        "volume": 120
+    },
+    {
+        "type":"bigContainer",
+        "height": 118,
+        "width": 72,
+        "profundity":99,
+        "volume": 500
+    },
+    {
+        "type":"giantContainer",
+        "height": 135,
+        "width": 126,
+        "profundity": 107, 
+        "volume": 1000
+    }
+]
