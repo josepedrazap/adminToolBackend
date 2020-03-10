@@ -2,30 +2,30 @@ const Removals = require('../models/removals')
 const Locals = require('../models/locals')
 const Reports = require('../models/reports')
 const ecoData = require('../files/ecoData.json')
-const pdf = require('html-pdf')
+// const pdf = require('html-pdf')
 const fs = require('fs')
 const ejs = require('ejs')
 const uploadFile = require('../services/uploadFile')
 
-const createPDF = (data) => {
-  return new Promise((resolve, reject) => {
-    var compiled = ejs.compile(
-      fs.readFileSync('./views/pdf.ejs', 'utf8')
-    )
-    const ret = compiled({
-      ...data
-    })
-    pdf
-      .create(ret.toString())
-      .toFile('./temp/reports/' + data.ID + '.pdf', (err, pdf) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(pdf.filename)
-        }
-      })
-  })
-}
+// const createPDF = (data) => {
+//   return new Promise((resolve, reject) => {
+//     var compiled = ejs.compile(
+//       fs.readFileSync('./views/pdf.ejs', 'utf8')
+//     )
+//     const ret = compiled({
+//       ...data
+//     })
+//     pdf
+//       .create(ret.toString())
+//       .toFile('./temp/reports/' + data.ID + '.pdf', (err, pdf) => {
+//         if (err) {
+//           reject(err)
+//         } else {
+//           resolve(pdf.filename)
+//         }
+//       })
+//   })
+// }
 
 exports.retriveReports = (req, res) => {
   Reports.find()
@@ -262,21 +262,23 @@ exports.createReport = async (req, res) => {
   const qrtext = 'https://s3.amazonaws.com/accioncircular.com/reports/' + localID + '_' + report._id + '.pdf'
   const qr = 'https://quickchart.io/qr?text=' + qrtext + '&dark=457595&light=fff&ecLevel=Q&format=png'
 
-  createPDF({ ID: localID + '_' + report._id, payload: payload.filter(element => element.v), total, year, month, company, totalKilos, qr, data, outlabeledPie, metadata, acumulated })
-    .then(response => {
-      uploadFile.upload({
-        pdf: response,
-        path: 'reports',
-        ID: localID + '_' + report._id
-      }).then(async (url) => {
-        await Reports.findOneAndUpdate({ _id: report._id }, { url })
-        fs.unlink(response, (_err, _data) => {
-          return res.status(200).send(url)
-        })
-      }).catch(err => {
-        return res.status(400).send(err)
-      })
-    }).catch(err => {
-      return res.status(400).send(err)
-    })
+  return res.status(200).send()
+
+  // createPDF({ ID: localID + '_' + report._id, payload: payload.filter(element => element.v), total, year, month, company, totalKilos, qr, data, outlabeledPie, metadata, acumulated })
+  //   .then(response => {
+  //     uploadFile.upload({
+  //       pdf: response,
+  //       path: 'reports',
+  //       ID: localID + '_' + report._id
+  //     }).then(async (url) => {
+  //       await Reports.findOneAndUpdate({ _id: report._id }, { url })
+  //       fs.unlink(response, (_err, _data) => {
+  //         return res.status(200).send(url)
+  //       })
+  //     }).catch(err => {
+  //       return res.status(400).send(err)
+  //     })
+  //   }).catch(err => {
+  //     return res.status(400).send(err)
+  //   })
 }
