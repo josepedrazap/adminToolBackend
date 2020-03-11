@@ -4,7 +4,7 @@ const WorkingToken = require('../models/workingTokens')
 const service = require('../services')
 
 exports.login = (req, res) => {
-  User.findOne({
+    User.findOne({
     email: req.body.email.toLowerCase()
   }).exec((err, usr) => {
     if (err) {

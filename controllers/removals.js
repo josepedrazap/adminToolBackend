@@ -2,6 +2,7 @@ const Removals = require('../models/removals')
 const Locals = require('../models/locals')
 const Transporters = require('../models/transporters')
 const pdfUpload = require('../services/pdfUpload')
+const Customers = require('../models/costumers')
 
 exports.retriveRemovals = async (req, res) => {
   var search = JSON.parse(req.query.searchData)
@@ -39,7 +40,14 @@ exports.retriveRemovals = async (req, res) => {
 }
 
 exports.getDataCreateRemoval = async (req, res) => {
-  const locals = await Locals.find()
+  const customers = await Customers.find({ status: "READY" }).populate('localsID')
+  console.log(customers)
+  const locals = []
+  await customers.forEach(customer => {
+    customer.localsID.forEach(element => {
+      locals.push({...element, name: customer.brand + " - " + element.name})
+    })
+  })
   const trasportists = await Transporters.find()
   return res.status(200).send({ locals, trasportists })
 }

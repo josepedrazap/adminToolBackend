@@ -32,6 +32,11 @@ const costumerSchema = new Schema(
     datetimeCreated: {
       type: Date,
       default: Date.now()
+    },
+    status: {
+      type: String,
+      default: "READY",
+      enum: ["READY", "DELETED"]
     }
   },
   {

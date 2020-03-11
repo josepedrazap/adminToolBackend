@@ -9,6 +9,8 @@ const transportersController = require('../controllers/transporters')
 const localsController = require('../controllers/locals')
 const usersController = require('../controllers/users')
 const customerController = require('../controllers/customers')
+const toolsController = require('../controllers/tools')
+
 // removals
 router.get('/removals', authAdmin, removalsController.retriveRemovals)
 router.patch('/removals', authAdmin, removalsController.createRemoval)
@@ -37,5 +39,8 @@ router.delete('/users', usersController.deleteUser)
 //customers
 router.post('/customers', customerController.create)
 router.get('/customers', customerController.retrieve)
+
+//tools
+router.get('/tools', toolsController.aggregateStatusLocalsCustomers)
 
 module.exports = router

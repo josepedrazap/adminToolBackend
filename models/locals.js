@@ -31,6 +31,11 @@ const localSchema = new Schema(
     commune: {
       type: String,
       default: ''
+    },
+    status: {
+      type: String,
+      default: "READY",
+      enum: ["READY", "DELETED"]
     }
   },
   {
