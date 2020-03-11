@@ -38,7 +38,7 @@ const removalSchema = new Schema(
     status: {
       type: String,
       default: 'PENDING_TRANS',
-      enum: ['PENDING_TRANS', 'PENDING_PAYMENT', 'COMPLETE', "DELETED"]
+      enum: ['PENDING_TRANS', 'PENDING_PAYMENT', 'COMPLETE', 'DELETED']
     },
     urlReport: {
       type: String,

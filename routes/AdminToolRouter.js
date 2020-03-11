@@ -41,6 +41,6 @@ router.post('/customers', customerController.create)
 router.get('/customers', customerController.retrieve)
 
 //tools
-router.get('/tools', toolsController.aggregateStatusLocalsCustomers)
+router.get('/tools', toolsController.aggregateCusmerIDToLocal)
 
 module.exports = router

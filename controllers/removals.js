@@ -34,8 +34,9 @@ exports.retriveRemovals = async (req, res) => {
         console.log(err)
         return res.status(400).send()
       }
-      console.log(removals)
-      return res.status(200).send(removals)
+      Locals.populate(removals, {path: "localID.customerID", model: "Costumer"}, (_err, removals) => {
+        return res.status(200).send(removals)
+      })
     })
 }
 
