@@ -1,12 +1,12 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 
 const localSchema = new Schema(
   {
     name: {
       type: String,
-      default: ''
+      default: ""
     },
     customerID: {
       type: Schema.Types.ObjectId,
@@ -14,19 +14,19 @@ const localSchema = new Schema(
     },
     phone: {
       type: String,
-      default: ''
+      default: ""
     },
     email: {
       type: String,
-      default: ''
+      default: ""
     },
     contactName: {
       type: String,
-      default: ''
+      default: ""
     },
     address: {
       type: String,
-      default: ''
+      default: ""
     },
     suscription: {
       type: Number,
@@ -34,7 +34,7 @@ const localSchema = new Schema(
     },
     commune: {
       type: String,
-      default: ''
+      default: ""
     },
     status: {
       type: String,
@@ -45,7 +45,7 @@ const localSchema = new Schema(
   {
     minimize: false
   }
-)
+);
 
 // Export model
-module.exports = mongoose.model('Local', localSchema)
+module.exports = mongoose.model("Local", localSchema);

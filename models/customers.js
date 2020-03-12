@@ -1,12 +1,12 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 
 const customerSchema = new Schema(
   {
     brand: {
       type: String,
-      default: ''
+      default: ""
     },
     rut: {
       type: String,
@@ -24,11 +24,13 @@ const customerSchema = new Schema(
       type: String,
       default: ""
     },
-    localsID: [{
-      type: Schema.Types.ObjectId,
-      default: null,
-      ref: "Local"
-    }],
+    localsID: [
+      {
+        type: Schema.Types.ObjectId,
+        default: null,
+        ref: "Local"
+      }
+    ],
     datetimeCreated: {
       type: Date,
       default: Date.now()
@@ -42,7 +44,7 @@ const customerSchema = new Schema(
   {
     minimize: false
   }
-)
+);
 
 // Export model
-module.exports = mongoose.model('Customer', customerSchema)
+module.exports = mongoose.model("Customer", customerSchema);
