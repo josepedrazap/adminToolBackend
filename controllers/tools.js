@@ -1,4 +1,4 @@
-const Customers = require('../models/costumers')
+const Customers = require('../models/customers')
 const Locals = require('../models/locals')
 exports.aggregateStatusLocalsCustomers = (req, res) => {
     Customers.updateMany({}, {status :"READY"})

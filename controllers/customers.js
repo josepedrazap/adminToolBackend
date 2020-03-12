@@ -1,11 +1,17 @@
-const Customers = require('../models/costumers')
+const Customers = require('../models/customers')
 const Locals = require('../models/locals')
 
 exports.create = (req, res) => {
-    const data = req.body
+    var data = req.body
 
     Customers.create(data.customer, (_err, customer) => {
         if(customer){
+            data.locals = data.locals.map(local => {
+                return {
+                    ...local,
+                    customerID: customer._id
+                }
+            })
             Locals.create(data.locals, (_err, locals) => {
                 if(locals){
                     customer.localsID = locals.map(local => local._id)

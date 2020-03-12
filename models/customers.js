@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
-const costumerSchema = new Schema(
+const customerSchema = new Schema(
   {
     brand: {
       type: String,
@@ -45,4 +45,4 @@ const costumerSchema = new Schema(
 )
 
 // Export model
-module.exports = mongoose.model('Costumer', costumerSchema)
+module.exports = mongoose.model('Customer', customerSchema)

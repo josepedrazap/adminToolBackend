@@ -2,7 +2,7 @@ const Removals = require('../models/removals')
 const Locals = require('../models/locals')
 const Transporters = require('../models/transporters')
 const pdfUpload = require('../services/pdfUpload')
-const Customers = require('../models/costumers')
+const Customers = require('../models/customers')
 
 exports.retriveRemovals = async (req, res) => {
   var search = JSON.parse(req.query.searchData)
@@ -32,9 +32,9 @@ exports.retriveRemovals = async (req, res) => {
     .exec((err, removals) => {
       if (err) {
         console.log(err)
-        return res.status(400).send()
+        return res.status(400).send(err)
       }
-      Locals.populate(removals, {path: "localID.customerID", model: "Costumer"}, (_err, removals) => {
+      Locals.populate(removals, {path: "localID.customerID", model: "Customer"}, (_err, removals) => {
         return res.status(200).send(removals)
       })
     })
@@ -42,7 +42,6 @@ exports.retriveRemovals = async (req, res) => {
 
 exports.getDataCreateRemoval = async (req, res) => {
   const customers = await Customers.find({ status: "READY" }).populate('localsID')
-  console.log(customers)
   const locals = []
   await customers.forEach(customer => {
     customer.localsID.forEach(element => {
@@ -54,7 +53,6 @@ exports.getDataCreateRemoval = async (req, res) => {
 }
 
 exports.createRemoval = async (req, res) => {
-  console.log(req.body)
   let status = 'PENDING_TRANS'
   var removal = null
 
@@ -90,7 +88,6 @@ exports.createRemoval = async (req, res) => {
   } else {
     delete req.body._id
     removal = await Removals.create({ ...req.body, status })
-    console.log(removal)
     if (req.body.file) {
       pdfUpload.index({
         pdf: req.body.file,
@@ -116,7 +113,7 @@ exports.statsRemovals = async (req, res) => {
   var dateInit = new Date(req.query.dateInit.replace(/['"]+/g, ''))
   var dateFinish = new Date(req.query.dateFinish.replace(/['"]+/g, ''))
 
-  const removalsPerLocal = await Removals.aggregate([
+  var removalsPerLocal = await Removals.aggregate([
     { $match: { status: 'COMPLETE', datetimeRemoval: { $lt: dateFinish, $gt: dateInit } } },
     {
       $lookup: {
@@ -130,13 +127,15 @@ exports.statsRemovals = async (req, res) => {
     {
       $project: {
         name: '$local.name',
+        customerID: '$local.customerID',
         payment: '$payment',
         suscription: '$local.suscription'
       }
     },
-    { $group: { _id: { name: '$name', suscription: '$suscription' }, total: { $sum: '$payment' }, quantity: { $sum: 1 } } }
+    { $group: { _id: { name: '$name', suscription: '$suscription', customerID: "$customerID" }, total: { $sum: '$payment' }, quantity: { $sum: 1 } } }
   ])
-  console.log(removalsPerLocal)
+
+  removalsPerLocal = await Locals.populate(removalsPerLocal, {path: "_id.customerID", model: "Customer"})
   const totalMaterials = await Removals.aggregate([
     { $match: { status: 'COMPLETE', datetimeRemoval: { $lt: dateFinish, $gt: dateInit } } },
     { $project: { _id: 0, materials: 1 } },
