@@ -38,12 +38,15 @@ router.get(
 // transporters
 router.post("/transporters", transportersController.create);
 router.get("/transporters", transportersController.getTransporters);
+router.delete("/transporters", transportersController.delete);
+router.patch("/transporters", transportersController.update);
 
 // locals
 router.post("/locals", localsController.create);
+router.patch("/locals", localsController.update);
 router.get("/locals", localsController.retrieve);
 router.get("/locals/getDataCreateLocal", localsController.getDataCreateLocal);
-
+router.delete("/locals", localsController.delete);
 // users
 router.post("/users", usersController.createUser);
 router.get("/users", usersController.getUsers);
@@ -53,8 +56,11 @@ router.delete("/users", usersController.deleteUser);
 //customers
 router.post("/customers", customerController.create);
 router.get("/customers", customerController.retrieve);
+router.patch("/customers", customerController.update);
+router.delete("/customers", customerController.delete);
 
 //tools
-router.get("/tools", toolsController.aggregateCusmerIDToLocal);
+// router.get("/tools", toolsController.aggregateCusmerIDToLocal);
+router.get("/tools", toolsController.aggregateStatusToTransporters);
 
 module.exports = router;

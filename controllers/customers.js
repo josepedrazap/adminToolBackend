@@ -27,17 +27,43 @@ exports.create = (req, res) => {
   });
 };
 
+exports.update = (req, res) => {
+  Customers.findOneAndUpdate({ _id: req.body._id }, req.body).exec(
+    (_err, customer) => {
+      return res.status(200).send(customer);
+    }
+  );
+};
+
 exports.retrieve = (req, res) => {
   const data = req.query;
 
-  Customers.find()
+  Customers.find({ status: "READY" })
     .populate("localsID")
-    .exec((_err, customer) => {
-      if (customer) {
-        console.log(customer);
-        return res.status(200).send(customer);
+    .exec((_err, customers) => {
+      if (customers) {
+        customers.forEach(customer => {
+          customer.localsID = customer.localsID.filter(
+            local => local.status !== "DELETED"
+          );
+        });
+        return res.status(200).send(customers);
       } else {
         return res.status(404).send();
       }
     });
+};
+exports.delete = (req, res) => {
+  Customers.findOneAndUpdate(
+    { _id: req.query.customerID },
+    { status: "DELETED" }
+  ).exec((_err, customer) => {
+    Locals.updateMany(
+      { _id: { $in: customer.localsID } },
+      { status: "DELETED" },
+      (_err, locals) => {
+        return res.status(200).send(customer);
+      }
+    );
+  });
 };

@@ -28,6 +28,14 @@ exports.create = (req, res) => {
   });
 };
 
+exports.update = (req, res) => {
+  Locals.findOneAndUpdate({ _id: req.body._id }, req.body).exec(
+    (_err, local) => {
+      return res.status(200).send(local);
+    }
+  );
+};
+
 exports.retrieve = async (req, res) => {
   const customers = await Customers.find({ status: "READY" }).populate(
     "localsID"
@@ -35,7 +43,9 @@ exports.retrieve = async (req, res) => {
   const locals = [];
   await customers.forEach(customer => {
     customer.localsID.forEach(element => {
-      locals.push({ element, name: customer.brand + " - " + element.name });
+      if (element.status !== "DELETED") {
+        locals.push({ element, name: customer.brand + " - " + element.name });
+      }
     });
   });
   return res.status(200).send(locals);
@@ -44,4 +54,13 @@ exports.retrieve = async (req, res) => {
 exports.getDataCreateLocal = async (req, res) => {
   const customers = await Customers.find({ status: "READY" });
   return res.status(200).send(customers);
+};
+
+exports.delete = (req, res) => {
+  Locals.findOneAndUpdate(
+    { _id: req.query.localID },
+    { status: "DELETED" }
+  ).exec((_err, local) => {
+    return res.status(200).send(local);
+  });
 };

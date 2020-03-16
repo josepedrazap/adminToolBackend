@@ -1,5 +1,7 @@
 const Customers = require("../models/customers");
 const Locals = require("../models/locals");
+const Transporters = require("../models/transporters");
+
 exports.aggregateStatusLocalsCustomers = (req, res) => {
   Customers.updateMany({}, { status: "READY" }).exec((_err, customers) => {
     Locals.updateMany({}, { status: "READY" }).exec((_err, locals) => {
@@ -29,5 +31,11 @@ exports.aggregateCusmerIDToLocal = (req, res) => {
       });
       return res.status(200).send();
     });
+  });
+};
+
+exports.aggregateStatusToTransporters = (req, res) => {
+  Transporters.updateMany({}, { status: "READY" }, (_err, transporters) => {
+    return res.status(200).send(transporters);
   });
 };

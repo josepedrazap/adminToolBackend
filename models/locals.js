@@ -36,6 +36,14 @@ const localSchema = new Schema(
       type: String,
       default: ""
     },
+    day: {
+      type: Number,
+      default: 0
+    },
+    removals: {
+      type: Number,
+      default: 1
+    },
     status: {
       type: String,
       default: "READY",

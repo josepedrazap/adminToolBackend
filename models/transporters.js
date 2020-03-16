@@ -1,46 +1,50 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 
 const transporterSchema = new Schema(
   {
     name: {
       type: String,
-      default: ''
+      default: ""
     },
     lastName: {
       type: String,
-      default: ''
+      default: ""
     },
     phone: {
       type: String,
-      default: ''
+      default: ""
     },
     email: {
       type: String,
-      default: ''
+      default: ""
     },
     company: {
       type: String,
-      default: ''
+      default: ""
     },
     address: {
       type: String,
-      default: ''
+      default: ""
     },
     commune: {
       type: String,
-      default: ''
+      default: ""
     },
     certification: {
       type: Boolean,
       default: false
+    },
+    status: {
+      type: String,
+      default: "READY"
     }
   },
   {
     minimize: false
   }
-)
+);
 
 // Export model
-module.exports = mongoose.model('Transporter', transporterSchema)
+module.exports = mongoose.model("Transporter", transporterSchema);

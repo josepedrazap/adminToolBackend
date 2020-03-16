@@ -53,7 +53,12 @@ exports.getDataCreateRemoval = async (req, res) => {
   const locals = [];
   await customers.forEach(customer => {
     customer.localsID.forEach(element => {
-      locals.push({ ...element, name: customer.brand + " - " + element.name });
+      if (element.status !== "DELETED") {
+        locals.push({
+          ...element,
+          name: customer.brand + " - " + element.name
+        });
+      }
     });
   });
   const trasportists = await Transporters.find();
