@@ -1,4 +1,4 @@
-const Transporters = require("../models/transporters");
+const Transporters = require("../../models/transporters");
 
 exports.create = (req, res) => {
   Transporters.create(req.body, (err, transporter) => {

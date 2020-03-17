@@ -1,5 +1,5 @@
-const Customers = require("../models/customers");
-const Locals = require("../models/locals");
+const Customers = require("../../models/customers");
+const Locals = require("../../models/locals");
 
 exports.create = (req, res) => {
   var data = req.body;

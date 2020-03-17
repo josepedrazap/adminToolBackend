@@ -1,8 +1,8 @@
-const Removals = require("../models/removals");
-const Locals = require("../models/locals");
-const Transporters = require("../models/transporters");
-const pdfUpload = require("../services/pdfUpload");
-const Customers = require("../models/customers");
+const Removals = require("../../models/removals");
+const Locals = require("../../models/locals");
+const Transporters = require("../../models/transporters");
+const pdfUpload = require("../../services/pdfUpload");
+const Customers = require("../../models/customers");
 
 exports.retriveRemovals = async (req, res) => {
   var search = JSON.parse(req.query.searchData);
@@ -68,6 +68,7 @@ exports.getDataCreateRemoval = async (req, res) => {
 exports.createRemoval = async (req, res) => {
   let status = "PENDING_TRANS";
   var removal = null;
+  const author = "ADMIN";
 
   if (req.body.transporterID) {
     if (String(req.body.payment) === "0") {
@@ -83,6 +84,7 @@ exports.createRemoval = async (req, res) => {
       {
         ...req.body,
         status,
+        author,
         lastModificationID: req.userID,
         datetimeLastModification: Date.now()
       }
@@ -238,4 +240,79 @@ exports.statsRemovals = async (req, res) => {
   return res
     .status(200)
     .send({ removalsPerLocal, removalsRates, totalMaterials });
+};
+
+exports.tempremovals = async (req, res) => {
+  const dateNow = new Date();
+  const datetimeInit = new Date(
+    dateNow.getFullYear(),
+    dateNow.getMonth(),
+    1,
+    0
+  );
+  const datetimeFinish = new Date(
+    dateNow.getFullYear(),
+    dateNow.getMonth() + 1,
+    0,
+    23,
+    59,
+    59
+  );
+
+  var locals = await Locals.find({ status: "READY" }).populate("customerID");
+  var data = [];
+
+  var pendings = 0;
+  var allRemovals = 0;
+
+  for (let i = 0; i < locals.length; i++) {
+    var removals = await Removals.find({
+      localID: locals[i]._id,
+      datetimeRequest: { $gt: datetimeInit }
+    });
+
+    let dates = [];
+    let allDates = removals.map(removal => {
+      return { date: removal.datetimeRemoval, status: true };
+    });
+
+    for (let j = removals.length; j < locals[i].removals; j++) {
+      let aux = new Date(
+        dateNow.getFullYear(),
+        dateNow.getMonth(),
+        parseInt((datetimeFinish.getDate() * j) / locals[i].removals) + 1
+      );
+
+      if (aux.getDay() === 6) {
+        aux = new Date(
+          dateNow.getFullYear(),
+          dateNow.getMonth(),
+          parseInt((datetimeFinish.getDate() * j) / locals[i].removals)
+        );
+      }
+      if (aux.getDay() === 0) {
+        aux = new Date(
+          dateNow.getFullYear(),
+          dateNow.getMonth(),
+          parseInt((datetimeFinish.getDate() * j) / locals[i].removals) + 2
+        );
+      }
+      allDates.push({ date: aux, status: false });
+      dates.push(aux);
+    }
+    data.push({
+      local: {
+        ...locals[i]._doc,
+        name: locals[i].customerID.brand + " " + locals[i].name
+      },
+      qRemovals: locals[i].removals,
+      cRemovals: removals.length,
+      dates,
+      allDates
+    });
+    pendings += locals[i].removals - removals.length;
+    allRemovals += locals[i].removals;
+  }
+  console.log(data);
+  return res.status(200).send({ data, pendings, allRemovals });
 };

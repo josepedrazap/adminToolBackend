@@ -10,7 +10,8 @@ const localSchema = new Schema(
     },
     customerID: {
       type: Schema.Types.ObjectId,
-      default: null
+      default: null,
+      ref: "Customer"
     },
     phone: {
       type: String,

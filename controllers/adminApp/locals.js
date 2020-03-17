@@ -1,5 +1,5 @@
-const Locals = require("../models/locals");
-const Customers = require("../models/customers");
+const Locals = require("../../models/locals");
+const Customers = require("../../models/customers");
 
 exports.create = (req, res) => {
   Locals.create(req.body.locals, (err, locals) => {

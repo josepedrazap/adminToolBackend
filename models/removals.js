@@ -1,23 +1,27 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 
 const removalSchema = new Schema(
   {
     localID: {
       type: Schema.Types.ObjectId,
       default: null,
-      ref: 'Local'
+      ref: "Local"
+    },
+    author: {
+      type: String,
+      enum: ["ADMIN", "APPWEB", "SENSOR"]
     },
     transporterID: {
       type: Schema.Types.ObjectId,
       default: null,
-      ref: 'Transporter'
+      ref: "Transporter"
     },
     lastModificationID: {
       type: Schema.Types.ObjectId,
       default: null,
-      ref: 'User'
+      ref: "User"
     },
     datetimeLastModification: {
       type: Date,
@@ -37,8 +41,8 @@ const removalSchema = new Schema(
     },
     status: {
       type: String,
-      default: 'PENDING_TRANS',
-      enum: ['PENDING_TRANS', 'PENDING_PAYMENT', 'COMPLETE', 'DELETED']
+      default: "PENDING_TRANS",
+      enum: ["PENDING_TRANS", "PENDING_PAYMENT", "COMPLETE", "DELETED"]
     },
     urlReport: {
       type: String,
@@ -46,21 +50,23 @@ const removalSchema = new Schema(
     },
     notes: {
       type: String,
-      default: ''
+      default: ""
     },
-    materials: [{
-      material: {
-        type: String
-      },
-      quantity: {
-        type: Number
+    materials: [
+      {
+        material: {
+          type: String
+        },
+        quantity: {
+          type: Number
+        }
       }
-    }]
+    ]
   },
   {
     minimize: false
   }
-)
+);
 
 // Export model
-module.exports = mongoose.model('Removal', removalSchema)
+module.exports = mongoose.model("Removal", removalSchema);
