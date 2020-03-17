@@ -1,1 +1,129 @@
-<%=title%>
+<div class="page">
+  <br />
+  <br />
+  <img
+    style="max-width: 240px; width:50%; margin: auto; display: block;"
+    src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+  />
+  <br />
+  <h2 style="text-align: center; color: #00C851">
+    <b>Eco equivalencia <%= month + " de " + year%></b>
+  </h2>
+  <h3
+    style="color: #00C851; margin-left: 80px; margin-right: 80px; margin-top: 40px; margin-right: 60px;"
+  >
+    Durante el mes de <%= month + " de " + year%>, el esfuerzo colaborativo por
+    lograr una economía circular se ve reflejado en el ahorro de:
+  </h3>
+  <br />
+
+  <div style="margin-right: 20px; margin-left: 20px;">
+    <div class="column33">
+      <img
+        src="https://image.flaticon.com/icons/svg/694/694059.svg"
+        style="max-width: 240px; width:35%; margin: auto; display: block;"
+      />
+      <div>
+        <h3 style="text-align: center; margin-top: 12px;">
+          <b
+            ><%=new Intl.NumberFormat(["ban", "id"]).format(total[2].q) + " " +
+            total[2].unity%></b
+          >
+        </h3>
+        <h4 style="text-align: center">
+          <b>de petróleo</b>
+        </h4>
+      </div>
+    </div>
+    <div class="column33">
+      <img
+        src="https://image.flaticon.com/icons/svg/990/990477.svg"
+        style="max-width: 240px; width:35%; margin: auto; display: block;"
+      />
+      <div>
+        <h3 style="text-align: center; margin-top: 12px;">
+          <b
+            ><%=new Intl.NumberFormat(["ban", "id"]).format(total[3].q) + " " +
+            total[3].unity%></b
+          >
+        </h3>
+        <h4 style="text-align: center">
+          <b>de energía</b>
+        </h4>
+      </div>
+    </div>
+    <div class="column33">
+      <img
+        src="https://image.flaticon.com/icons/svg/2299/2299217.svg"
+        style="max-width: 240px; width:35%; margin: auto; display: block;"
+      />
+      <div>
+        <h3 style="text-align: center; margin-top: 12px;">
+          <b
+            ><%=new Intl.NumberFormat(["ban", "id"]).format(total[4].q) + " " +
+            total[4].unity%></b
+          >
+        </h3>
+        <h4 style="text-align: center">
+          <b>de C02</b>
+        </h4>
+      </div>
+    </div>
+    <div class="column33">
+      <img
+        src="https://image.flaticon.com/icons/svg/1522/1522144.svg"
+        style="max-width: 240px; width:35%; margin: auto; display: block;"
+      />
+      <div>
+        <h3 style="text-align: center; margin-top: 12px;">
+          <b
+            ><%=new Intl.NumberFormat(["ban", "id"]).format(total[1].q) + " " +
+            total[1].unity%></b
+          >
+        </h3>
+        <h4 style="text-align: center">
+          <b>de agua</b>
+        </h4>
+      </div>
+    </div>
+    <div class="column33">
+      <img
+        src="https://image.flaticon.com/icons/svg/616/616541.svg"
+        style="max-width: 240px; width:35%; margin: auto; display: block;"
+      />
+      <div>
+        <h3 style="text-align: center; margin-top: 12px;">
+          <b><%=new Intl.NumberFormat(["ban", "id"]).format(total[0].q)%> Un</b>
+        </h3>
+        <h4 style="text-align: center">
+          <b>de árboles</b>
+        </h4>
+      </div>
+    </div>
+    <div class="column33">
+      <img
+        src="https://image.flaticon.com/icons/svg/609/609871.svg"
+        style="max-width: 240px; width:35%; margin: auto; display: block;"
+      />
+      <div>
+        <h3 style="text-align: center; margin-top: 12px;">
+          <b><%=new Intl.NumberFormat(["ban", "id"]).format(totalKilos)%> Kg</b>
+        </h3>
+        <h4 style="text-align: center">
+          <b>de material</b>
+        </h4>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <br />
+  <br />
+  <%metadata.forEach(element => {%>
+  <h3 style="color: #457595; text-align: center;"><b><%=element%></b></h3>
+  <%})%>
+  <img
+    style="background-color: white; width: 21cm; position: absolute; z-index: 1000; top: 144.85cm"
+    src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+  />
+</div>

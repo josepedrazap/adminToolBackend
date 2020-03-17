@@ -59,7 +59,7 @@ router.post("/customers", customerController.create);
 router.get("/customers", customerController.retrieve);
 router.patch("/customers", customerController.update);
 router.delete("/customers", customerController.delete);
-
+router.get("/customers/stats", customerController.stats);
 //tools
 // router.get("/tools", toolsController.aggregateCusmerIDToLocal);
 router.get("/tools", toolsController.aggregateStatusToTransporters);

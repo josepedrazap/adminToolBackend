@@ -39,7 +39,8 @@ exports.retriveReports = (req, res) => {
 };
 
 exports.getDataCreateReports = async (req, res) => {
-  const locals = await Locals.find();
+  const locals = await Locals.find({ status: "READY" }).populate("customerID");
+
   return res.status(200).send({ locals });
 };
 
@@ -241,6 +242,7 @@ exports.createReport = async (req, res) => {
       })
     });
   });
+
   payload
     .filter(element => element.v)
     .forEach(data => {
@@ -252,6 +254,7 @@ exports.createReport = async (req, res) => {
         });
       });
     });
+
   var dataActual = "";
   var colors = "";
   var dataPrev = "";
@@ -324,23 +327,27 @@ exports.createReport = async (req, res) => {
     qrtext +
     "&dark=457595&light=fff&ecLevel=Q&format=png";
 
-  return res.status(200).send();
+  console.log(total);
 
-  // createPDF({ ID: localID + '_' + report._id, payload: payload.filter(element => element.v), total, year, month, company, totalKilos, qr, data, outlabeledPie, metadata, acumulated })
-  //   .then(response => {
-  //     uploadFile.upload({
-  //       pdf: response,
-  //       path: 'reports',
-  //       ID: localID + '_' + report._id
-  //     }).then(async (url) => {
-  //       await Reports.findOneAndUpdate({ _id: report._id }, { url })
-  //       fs.unlink(response, (_err, _data) => {
-  //         return res.status(200).send(url)
-  //       })
-  //     }).catch(err => {
-  //       return res.status(400).send(err)
-  //     })
-  //   }).catch(err => {
-  //     return res.status(400).send(err)
-  //   })
+  const compiled = ejs.compile(fs.readFileSync("./views/pdf.ejs", "utf8"));
+
+  console.log(compiled);
+  var html = compiled({
+    ID: localID + "_" + report._id,
+    payload: payload.filter(element => element.v),
+    total,
+    year,
+    month,
+    company,
+    totalKilos,
+    qr,
+    data,
+    outlabeledPie,
+    metadata,
+    acumulated
+  });
+
+  console.log(html);
+
+  return res.status(200).send(html);
 };

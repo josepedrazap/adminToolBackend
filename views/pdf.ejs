@@ -1,0 +1,526 @@
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Lato", sans-serif;
+      }
+      h5 {
+        font-family: "Lato", sans-serif;
+      }
+      /* Create two equal columns that floats next to each other */
+
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
+      .page {
+        width: 21cm;
+        min-height: 29.7cm;
+        margin: 1cm auto;
+        border: 1px #d3d3d3 solid;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        background-blend-mode: screen;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .column33 {
+        float: left;
+        width: 33%;
+        padding: 30px;
+      }
+      .column25 {
+        float: left;
+        width: 25%;
+        height: 24px;
+      }
+      .imageLogo {
+        margin-top: 24;
+      }
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 19cm;
+        margin-left: 1cm;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background: #b4ffc7;
+      }
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      @media print {
+        .page {
+          margin: 0;
+          border: initial;
+          border-radius: initial;
+          width: initial;
+          min-height: initial;
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <img
+        style="max-width: 600px; width:50%; margin: auto; display: block;"
+        src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+      />
+      <br />
+      <br />
+      <br />
+      <br />
+      <h1 style="text-align: center; color: #00C851">
+        <b>
+          Reporte de reciclaje <%=company%>
+        </b>
+      </h1>
+      <br />
+      <h3 style="text-align: center">
+        <%= month + " de " + year%>
+      </h3>
+      <br />
+      <img
+        src="<%=qr%>"
+        style="
+                height: 200; 
+                width:25%; 
+                margin: auto; 
+                display: block;
+                "
+      />
+      <br />
+      <br />
+      <img
+        style="max-width: 400px;   
+                display: block;
+                margin-top: 5%;
+                margin-bottom: 5%;
+                margin-left: auto;
+                margin-right: auto;
+                width: 80%;"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/iconos(1).png"
+      />
+      <img
+        style="background-color: white; width: 21cm; position: absolute; z-index: 1000; top: 26.15cm"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+      />
+    </div>
+
+    <div class="page">
+      <br />
+      <br />
+      <img
+        class=""
+        style="max-width: 240px; width:50%; margin: auto; display: block;"
+        src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+      />
+      <br />
+      <h2 style="color: #00C851; margin-top: 40px; text-align: center">
+        Material reciclado
+      </h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"><%=(data[0].name)%></th>
+            <th scope="col"><%=(data[1].name)%></th>
+            <th scope="col"><%=(data[2].name)%></th>
+            <th scope="col"><%=(data[3].name)%></th>
+            <th scope="col"><%=(data[4].name)%></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td scope="row">
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[0].quantity)%>
+              Kg
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[1].quantity)%>
+              Kg
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[2].quantity)%>
+              Kg
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[3].quantity)%>
+              Kg
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[4].quantity)%>
+              Kg
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"><%=(data[5].name)%></th>
+            <th scope="col"><%=(data[6].name)%></th>
+            <th scope="col"><%=(data[7].name)%></th>
+            <th scope="col"><%=(data[8].name)%></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td scope="row">
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[5].quantity)%>
+              Kg
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[6].quantity)%>
+              Kg
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[7].quantity)%>
+              Kg
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(data[8].quantity)%>
+              Kg
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <br />
+      <h2 style="color: #00C851; margin-top: 40px; text-align: center">
+        Eco equivalencia por material
+      </h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Árboles</th>
+            <th scope="col">Agua</th>
+            <th scope="col">Petróleo</th>
+            <th scope="col">Energía</th>
+            <th scope="col">CO2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% payload.forEach( element => {%>
+          <tr>
+            <th scope="row"><%=element.name%></th>
+            <td><%=(element.data[0].quantity)%></td>
+            <td><%=(element.data[1].quantity)%></td>
+            <td><%=(element.data[2].quantity)%></td>
+            <td><%=(element.data[3].quantity)%></td>
+            <td><%=(element.data[4].quantity)%></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <br />
+      <br />
+      <br />
+      <img
+        style="background-color: white; width: 21cm; position: absolute; z-index: 1000; top: 55.8cm"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+      />
+    </div>
+
+    <div class="page">
+      <br />
+      <br />
+      <img
+        style="max-width: 240px; width:50%; margin: auto; display: block;"
+        src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+      />
+      <br />
+      <h2 style="color: #00C851; margin-top: 40px; text-align: center">
+        Total reciclado
+      </h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Árboles</th>
+            <th scope="col">Agua</th>
+            <th scope="col">Petróleo</th>
+            <th scope="col">Energía</th>
+            <th scope="col">CO2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Total</th>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(total[0].q) + " " +
+              total[0].unity%>
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(total[1].q) + " " +
+              total[1].unity%>
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(total[2].q) + " " +
+              total[2].unity%>
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(total[3].q) + " " +
+              total[3].unity%>
+            </td>
+            <td>
+              <%=new Intl.NumberFormat(["ban", "id"]).format(total[4].q) + " " +
+              total[4].unity%>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <h2 style="color: #00C851; margin-top: 40px; text-align: center">
+        Relación materiales reciclados por kilógramos
+      </h2>
+      <img src="<%=outlabeledPie%>" style="margin: auto; display: block;" />
+      <img
+        style="background-color: white; width: 21cm; position: absolute; z-index: 1000; top: 85.52cm"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+      />
+    </div>
+
+    <div class="page">
+      <br />
+      <br />
+      <img
+        style="max-width: 240px; width:50%; margin: auto; display: block;"
+        src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+      />
+      <br />
+      <br />
+      <h2
+        style="color: #00C851; margin-left: 80px; margin-right: 80px; margin-top: 40px;"
+      >
+        Comparativa período actual, anterior y promedio acumulado
+      </h2>
+      <br />
+      <img src="<%=acumulated%>" style="margin: auto; display: block;" />
+      <br />
+      <h4 style="text-align: center">Valores en kilógramos (Kg)</h4>
+      <img
+        style="background-color: white; width: 21cm; position: absolute; z-index: 1000; top: 115.2cm"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+      />
+    </div>
+
+    <div class="page">
+      <br />
+      <br />
+      <img
+        style="max-width: 240px; width:50%; margin: auto; display: block;"
+        src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+      />
+      <br />
+      <h2 style="text-align: center; color: #00C851">
+        <b>Eco equivalencia <%= month + " de " + year%></b>
+      </h2>
+      <h3
+        style="color: #00C851; margin-left: 80px; margin-right: 80px; margin-top: 40px; margin-right: 60px;"
+      >
+        Durante el mes de <%= month + " de " + year%>, el esfuerzo colaborativo
+        por lograr una economía circular se ve reflejado en el ahorro de:
+      </h3>
+      <br />
+
+      <div style="margin-right: 20px; margin-left: 20px;">
+        <div class="column33">
+          <img
+            src="https://image.flaticon.com/icons/svg/694/694059.svg"
+            style="max-width: 240px; width:35%; margin: auto; display: block;"
+          />
+          <div>
+            <h3 style="text-align: center; margin-top: 12px;">
+              <b>
+                <%=new Intl.NumberFormat(["ban", "id"]).format(total[2].q) + " "
+                + total[2].unity%>
+              </b>
+            </h3>
+            <h4 style="text-align: center">
+              <b>de petróleo</b>
+            </h4>
+          </div>
+        </div>
+        <div class="column33">
+          <img
+            src="https://image.flaticon.com/icons/svg/990/990477.svg"
+            style="max-width: 240px; width:35%; margin: auto; display: block;"
+          />
+          <div>
+            <h3 style="text-align: center; margin-top: 12px;">
+              <b>
+                <%=new Intl.NumberFormat(["ban", "id"]).format(total[3].q) + " "
+                + total[3].unity%>
+              </b>
+            </h3>
+            <h4 style="text-align: center">
+              <b>de energía</b>
+            </h4>
+          </div>
+        </div>
+        <div class="column33">
+          <img
+            src="https://image.flaticon.com/icons/svg/2299/2299217.svg"
+            style="max-width: 240px; width:35%; margin: auto; display: block;"
+          />
+          <div>
+            <h3 style="text-align: center; margin-top: 12px;">
+              <b>
+                <%=new Intl.NumberFormat(["ban", "id"]).format(total[4].q) + " "
+                + total[4].unity%>
+              </b>
+            </h3>
+            <h4 style="text-align: center">
+              <b>de C02</b>
+            </h4>
+          </div>
+        </div>
+        <div class="column33">
+          <img
+            src="https://image.flaticon.com/icons/svg/1522/1522144.svg"
+            style="max-width: 240px; width:35%; margin: auto; display: block;"
+          />
+          <div>
+            <h3 style="text-align: center; margin-top: 12px;">
+              <b>
+                <%=new Intl.NumberFormat(["ban", "id"]).format(total[1].q) + " "
+                + total[1].unity%>
+              </b>
+            </h3>
+            <h4 style="text-align: center">
+              <b>de agua</b>
+            </h4>
+          </div>
+        </div>
+        <div class="column33">
+          <img
+            src="https://image.flaticon.com/icons/svg/616/616541.svg"
+            style="max-width: 240px; width:35%; margin: auto; display: block;"
+          />
+          <div>
+            <h3 style="text-align: center; margin-top: 12px;">
+              <b>
+                <%=new Intl.NumberFormat(["ban", "id"]).format(total[0].q)%> Un
+              </b>
+            </h3>
+            <h4 style="text-align: center">
+              <b>de árboles</b>
+            </h4>
+          </div>
+        </div>
+        <div class="column33">
+          <img
+            src="https://image.flaticon.com/icons/svg/609/609871.svg"
+            style="max-width: 240px; width:35%; margin: auto; display: block;"
+          />
+          <div>
+            <h3 style="text-align: center; margin-top: 12px;">
+              <b>
+                <%=new Intl.NumberFormat(["ban", "id"]).format(totalKilos)%> Kg
+              </b>
+            </h3>
+            <h4 style="text-align: center">
+              <b>de material</b>
+            </h4>
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+      <br />
+      <%metadata.forEach(element => {%>
+      <h3 style="color: #457595; text-align: center;"><b><%=element%></b></h3>
+      <%})%>
+      <img
+        style="background-color: white; width: 21cm; position: absolute; z-index: 1000; top: 144.85cm"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+      />
+    </div>
+
+    <div class="page">
+      <br />
+      <br />
+      <img
+        style="max-width: 240px; width:50%; margin: auto; display: block;"
+        src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+      />
+      <br />
+      <br />
+      <h2 style="color: #457595; text-align: center">
+        <b>
+          Consigue este certificado digital escaneando el siguiente código QR
+        </b>
+      </h2>
+      <br />
+      <br />
+      <img
+        src="<%=qr%>"
+        style="
+                height: 200; 
+                width:25%; 
+                margin: auto; 
+                display: block;
+                "
+      />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <img
+        style="max-width: 400px;   
+                display: block;
+                margin-top: 5%;
+                margin-bottom: 5%;
+                margin-left: auto;
+                margin-right: auto;
+                width: 80%;"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/iconos(1).png"
+      />
+      <img
+        style="background-color: white; 
+                width: 21cm; 
+                position: absolute; 
+                z-index: 1000; 
+                top: 174.55cm"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+      />
+    </div>
+  </body>
+</html>
