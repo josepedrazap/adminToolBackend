@@ -75,7 +75,15 @@ exports.stats = async (req, res) => {
   var dateFinish = new Date(req.query.dateFinish.replace(/['"]+/g, ""));
 
   const locals = await Locals.find({ customerID: req.query.customerID });
-  console.log(locals);
+
+  const removals = await Removals.find({
+    status: "COMPLETE",
+    localID: { $in: locals.map(local => local._id) },
+    datetimeRemoval: { $lt: dateFinish, $gt: dateInit }
+  })
+    .populate("localID")
+    .populate("transporterID");
+
   const totalMaterials = await Removals.aggregate([
     {
       $match: {
@@ -115,7 +123,6 @@ exports.stats = async (req, res) => {
       }
     });
   });
-  console.log(ecoeq);
   // ecoeq = {
   //   tree: ecoeq[0].q,
   //   water: ecoeq[1].q,
@@ -123,5 +130,5 @@ exports.stats = async (req, res) => {
   //   energy: ecoeq[3].q,
   //   co2: ecoeq[4].q
   // };
-  return res.status(200).send({ totalMaterials, ecoeq });
+  return res.status(200).send({ totalMaterials, ecoeq, removals });
 };
