@@ -55,6 +55,7 @@ exports.retrieve = (req, res) => {
       }
     });
 };
+
 exports.delete = (req, res) => {
   Customers.findOneAndUpdate(
     { _id: req.query.customerID },

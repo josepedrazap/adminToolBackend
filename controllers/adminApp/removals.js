@@ -268,7 +268,8 @@ exports.tempremovals = async (req, res) => {
   for (let i = 0; i < locals.length; i++) {
     var removals = await Removals.find({
       localID: locals[i]._id,
-      datetimeRequest: { $gt: datetimeInit }
+      datetimeRequest: { $gt: datetimeInit },
+      status: { $in: ["COMPLETE", "PENDING_PAYMENT"] }
     });
 
     let dates = [];
