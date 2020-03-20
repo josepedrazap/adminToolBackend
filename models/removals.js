@@ -29,7 +29,7 @@ const removalSchema = new Schema(
     },
     datetimeRequest: {
       type: Date,
-      default: null
+      default: Date.now()
     },
     datetimeRemoval: {
       type: Date,
@@ -42,7 +42,13 @@ const removalSchema = new Schema(
     status: {
       type: String,
       default: "PENDING_TRANS",
-      enum: ["PENDING_TRANS", "PENDING_PAYMENT", "COMPLETE", "DELETED"]
+      enum: [
+        "PENDING_TRANS",
+        "PENDING_PAYMENT",
+        "COMPLETE",
+        "DELETED",
+        "IN_AUCTION"
+      ]
     },
     urlReport: {
       type: String,
@@ -55,10 +61,12 @@ const removalSchema = new Schema(
     materials: [
       {
         material: {
-          type: String
+          type: String,
+          default: "PET"
         },
         quantity: {
-          type: Number
+          type: Number,
+          default: 0
         }
       }
     ]

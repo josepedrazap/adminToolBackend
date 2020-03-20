@@ -3,8 +3,50 @@ const Locals = require("../../models/locals");
 const Transporters = require("../../models/transporters");
 const pdfUpload = require("../../services/pdfUpload");
 const Customers = require("../../models/customers");
+const AuctionRequests = require("../../models/auctionRequests");
 
-exports.retriveRemovals = async (req, res) => {
+exports.index = async (req, res) => {
+  // RETIROS COMPLETOS CON MATERIALES AGREGADOS
+  var completes = await (await Removals.find({ status: "COMPLETE" })).filter(
+    removal =>
+      removal.materials.reduce(
+        (total, current) => (total += current.quantity),
+        0
+      ) !== 0
+  ).length;
+  // RETIROS EN SUBASTA
+  const auction = await (await Removals.find({ status: "IN_AUCTION" })).length;
+
+  // RETIROS SIN MATERIAL
+  const incompletes = await (
+    await Removals.find({
+      status: { $in: ["PENDING_TRANS", "PENDING_PAYMENT", "COMPLETE"] }
+    })
+  ).filter(
+    removal =>
+      removal.materials.reduce(
+        (total, current) => (total += current.quantity),
+        0
+      ) === 0
+  ).length;
+
+  const locals = await Locals.find({ status: "READY" });
+  const now = new Date();
+  let pendings = 0;
+
+  for (let i = 0; i < locals.length; i++) {
+    var removals = await Removals.find({
+      localID: locals[i]._id,
+      status: { $ne: "DELETED" },
+      datetimeRemoval: { $gt: new Date(now.getFullYear(), now.getMonth(), 1) }
+    });
+    pendings += locals[i].removals - removals.length;
+  }
+
+  return res.status(200).send({ completes, auction, incompletes, pendings });
+};
+
+exports.retriveRemovals2 = async (req, res) => {
   var search = JSON.parse(req.query.searchData);
 
   if (search.type === "LOCAL") {
@@ -27,7 +69,7 @@ exports.retriveRemovals = async (req, res) => {
     };
   }
 
-  Removals.find({ status: { $ne: "DELETED" } })
+  Removals.find({ status: { $nin: ["DELETED", "IN_AUCTION"] } })
     .populate("localID")
     .populate("transporterID")
     .populate("lastModificationID")
@@ -36,6 +78,57 @@ exports.retriveRemovals = async (req, res) => {
         console.log(err);
         return res.status(400).send(err);
       }
+      Locals.populate(
+        removals,
+        { path: "localID.customerID", model: "Customer" },
+        (_err, removals) => {
+          return res.status(200).send(removals);
+        }
+      );
+    });
+};
+
+exports.retriveRemovals = (req, res) => {
+  console.log(req.query.type);
+  var query = {};
+
+  if (req.query.type === "COMPLETE") {
+    query = {
+      status: "COMPLETE"
+    };
+  } else {
+    query = {
+      status: { $in: ["PENDING_TRANS", "PENDING_PAYMENT", "COMPLETE"] }
+    };
+  }
+
+  Removals.find(query)
+    .populate("localID")
+    .populate("transporterID")
+    .populate("lastModificationID")
+    .exec((err, removals) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err);
+      }
+      if (req.query.type === "COMPLETE") {
+        removals = removals.filter(
+          removal =>
+            removal.materials.reduce(
+              (total, current) => (total += current.quantity),
+              0
+            ) !== 0
+        );
+      } else {
+        removals = removals.filter(
+          removal =>
+            removal.materials.reduce(
+              (total, current) => (total += current.quantity),
+              0
+            ) === 0
+        );
+      }
+
       Locals.populate(
         removals,
         { path: "localID.customerID", model: "Customer" },
@@ -269,13 +362,31 @@ exports.tempremovals = async (req, res) => {
     var removals = await Removals.find({
       localID: locals[i]._id,
       datetimeRequest: { $gt: datetimeInit },
-      status: { $in: ["COMPLETE", "PENDING_PAYMENT"] }
+      status: { $ne: "DELETED" }
     });
 
+    var allDates = [];
     let dates = [];
-    let allDates = removals.map(removal => {
-      return { date: removal.datetimeRemoval, status: true };
-    });
+
+    for (let j = 0; j < removals.length; j++) {
+      // RETIROS QUE YA EXISTEN O ESTAN SIENDO SUBASTADOS
+      if (removals[j].status === "IN_AUCTION") {
+        var requests = await AuctionRequests.find({
+          removalID: removals[j]._id
+        }).populate("transporterID");
+        allDates.push({
+          date: removals[j].datetimeRemoval,
+          status: removals[j].status,
+          requests
+        });
+      } else {
+        allDates.push({
+          date: removals[j].datetimeRemoval,
+          status: removals[j].status
+        });
+      }
+    }
+    // RETIROS QUE AUN NO EXISTEN Y DEBEN CREARSE
 
     for (let j = removals.length; j < locals[i].removals; j++) {
       let aux = new Date(
@@ -284,6 +395,7 @@ exports.tempremovals = async (req, res) => {
         parseInt((datetimeFinish.getDate() * j) / locals[i].removals) + 1
       );
 
+      // Desplaza un sabado al viernes anterior
       if (aux.getDay() === 6) {
         aux = new Date(
           dateNow.getFullYear(),
@@ -291,6 +403,7 @@ exports.tempremovals = async (req, res) => {
           parseInt((datetimeFinish.getDate() * j) / locals[i].removals)
         );
       }
+      // Desplaza un domingo al lunes siguiente
       if (aux.getDay() === 0) {
         aux = new Date(
           dateNow.getFullYear(),
@@ -298,9 +411,12 @@ exports.tempremovals = async (req, res) => {
           parseInt((datetimeFinish.getDate() * j) / locals[i].removals) + 2
         );
       }
-      allDates.push({ date: aux, status: false });
+
+      allDates.push({ date: aux, status: "NOT_REQUEST" });
       dates.push(aux);
     }
+
+    // INGRESAR TODOS LOS DATOS A DATA
     data.push({
       local: {
         ...locals[i]._doc,
@@ -314,6 +430,6 @@ exports.tempremovals = async (req, res) => {
     pendings += locals[i].removals - removals.length;
     allRemovals += locals[i].removals;
   }
-  console.log(data);
+
   return res.status(200).send({ data, pendings, allRemovals });
 };

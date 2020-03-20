@@ -327,11 +327,8 @@ exports.createReport = async (req, res) => {
     qrtext +
     "&dark=457595&light=fff&ecLevel=Q&format=png";
 
-  console.log(total);
-
   const compiled = ejs.compile(fs.readFileSync("./views/pdf.ejs", "utf8"));
 
-  console.log(compiled);
   var html = compiled({
     ID: localID + "_" + report._id,
     payload: payload.filter(element => element.v),
@@ -346,8 +343,6 @@ exports.createReport = async (req, res) => {
     metadata,
     acumulated
   });
-
-  console.log(html);
 
   return res.status(200).send(html);
 };

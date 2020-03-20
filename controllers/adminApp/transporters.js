@@ -18,7 +18,6 @@ exports.getTransporters = (req, res) => {
   });
 };
 exports.update = (req, res) => {
-  console.log(req.body);
   Transporters.findOneAndUpdate({ _id: req.body._id }, req.body).exec(
     (_err, transporter) => {
       return res.status(200).send(transporter);
