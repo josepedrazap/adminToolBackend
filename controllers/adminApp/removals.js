@@ -46,6 +46,28 @@ exports.index = async (req, res) => {
   return res.status(200).send({ completes, auction, incompletes, pendings });
 };
 
+exports.retriveRemovalsAuction = async (req, res) => {
+  const removals = await Removals.find({ status: "IN_AUCTION" })
+    .populate("localID")
+    .populate("transporterID");
+
+  Locals.populate(
+    removals,
+    { path: "localID.customerID", model: "Customer" },
+    async (_err, removals) => {
+      var payload = [];
+
+      for (let i = 0; i < removals.length; i++) {
+        let auction = await AuctionRequests.find({
+          removalID: removals[i]._id
+        }).populate("transporterID");
+        payload.push({ removal: removals[i], auction });
+      }
+      return res.status(200).send(payload);
+    }
+  );
+};
+
 exports.retriveRemovals2 = async (req, res) => {
   var search = JSON.parse(req.query.searchData);
 

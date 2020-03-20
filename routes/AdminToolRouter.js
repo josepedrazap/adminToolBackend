@@ -24,7 +24,10 @@ router.delete("/removals", authAdmin, removalsController.deleteRemoval);
 router.get("/removals/stats", authAdmin, removalsController.statsRemovals);
 router.get("/removals/tempremoval", removalsController.tempremovals);
 router.get("/removals/index", removalsController.index);
-
+router.get(
+  "/removals/removalAuction",
+  removalsController.retriveRemovalsAuction
+);
 // reports
 router.get("/reports", authAdmin, reportsController.retriveReports);
 router.post("/reports", authAdmin, reportsController.createReport);
