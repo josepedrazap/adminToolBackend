@@ -15,6 +15,8 @@ const templatesEmails = data => {
   switch (data.type) {
     case "REMOVAL_NOTIFY":
       return require("../templates/removalNotify/config").exec(data);
+    case "NEW_USER_VERIFY":
+      return require("../templates/newUserVerify/config").exec(data);
     default:
       return [];
   }

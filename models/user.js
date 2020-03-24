@@ -1,12 +1,13 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
     email: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     password: {
       type: String,
@@ -15,11 +16,11 @@ const userSchema = new Schema(
     type: {
       type: String,
       required: true,
-      enum: ['MATRIX', 'TRANS', 'ADMIN', 'VALOR', 'LOCAL']
+      enum: ["CUSTOMER", "TRANS", "ADMIN", "LOCAL"]
     },
     activate: {
       type: Number,
-      default: '0'
+      default: 0
     },
     entityID: {
       type: Schema.Types.ObjectId,
@@ -49,7 +50,7 @@ const userSchema = new Schema(
   {
     minimize: false
   }
-)
+);
 
 // Export model
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model("User", userSchema);

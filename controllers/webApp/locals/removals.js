@@ -1,8 +1,8 @@
-const Removals = require("../models/removals");
-const Locals = require("../models/locals");
-const Transporters = require("../models/transporters");
-const pdfUpload = require("../services/pdfUpload");
-const Customers = require("../models/customers");
+const Removals = require("../../../models/removals");
+const Locals = require("../../../models/locals");
+const Transporters = require("../../../models/transporters");
+const Customers = require("../../../models/customers");
+const pdfUpload = require("../../../services/pdfUpload");
 
 exports.createRemoval = async (req, res) => {
   let status = "PENDING_TRANS";
@@ -71,4 +71,12 @@ exports.createRemoval = async (req, res) => {
       return res.status(200).send(removal);
     }
   }
+};
+
+exports.getRemovals = async (req, res) => {
+  const removals = await Removals.find({
+    localID: req.entityID,
+    status: { $in: ["COMPLETE"] }
+  }).populate("transporterID");
+  return res.status(200).send(removals);
 };

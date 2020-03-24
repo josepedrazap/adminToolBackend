@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 
 const AdminToolRouter = require("./routes/AdminToolRouter");
+const WebAppRouter = require("./routes/webAppRouter");
+
 const authRouter = require("./routes/auth");
 const DataBase = require("./services/dataBase");
 const AuctionNotify = require("./services/auctionNotify");
@@ -55,6 +57,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Rutas!
 app.use("/adminTool", AdminToolRouter);
+app.use("/WebApp", WebAppRouter);
 app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler

@@ -38,8 +38,6 @@ exports.update = (req, res) => {
 };
 
 exports.retrieve = (req, res) => {
-  const data = req.query;
-
   Customers.find({ status: "READY" })
     .populate("localsID")
     .exec((_err, customers) => {

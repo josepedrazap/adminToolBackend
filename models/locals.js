@@ -49,6 +49,10 @@ const localSchema = new Schema(
       type: String,
       default: "READY",
       enum: ["READY", "DELETED"]
+    },
+    users: {
+      type: Array,
+      default: []
     }
   },
   {

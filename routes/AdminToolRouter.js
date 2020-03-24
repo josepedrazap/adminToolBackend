@@ -58,15 +58,24 @@ router.get(
   localsController.getDataCreateLocal
 );
 router.delete("/locals", authAdmin, localsController.delete);
+
 // users
 router.post("/users", authAdmin, usersController.createUser);
+router.post(
+  "/users/assignUserToEntity",
+  authAdmin,
+  usersController.assignUserToEntity
+);
 router.get("/users", authAdmin, usersController.getUsers);
-router.patch("/users", authAdmin, usersController.patchUser);
 router.delete("/users", authAdmin, usersController.deleteUser);
-
+router.get("/users/activate", usersController.activateUser);
 // auction
-router.post("/auction/createRequest", auctionController.craeteRequest);
-router.get("/auction/confirm", auctionController.confirm);
+router.post(
+  "/auction/createRequest",
+  authAdmin,
+  auctionController.craeteRequest
+);
+router.get("/auction/confirm", authAdmin, auctionController.confirm);
 
 //customers
 router.post("/customers", authAdmin, customerController.create);

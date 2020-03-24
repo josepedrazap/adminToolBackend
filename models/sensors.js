@@ -2,19 +2,19 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
-const suscriptionSchema = new Schema(
+const sensorsSchema = new Schema(
   {
-    value: {
+    model: {
       type: Number,
-      default: ''
+      default: null
     },
-    name: {
-      type: String,
-      default: ''
-    },
-    routines: [{
+    localID: {
       type: Schema.Types.ObjectId,
       default: null
+    },
+    imei: [{
+      type: Date,
+      default: Date.now()
     }],
     datetimeCreated: {
       type: Date,
@@ -27,4 +27,4 @@ const suscriptionSchema = new Schema(
 )
 
 // Export model
-module.exports = mongoose.model('Suscription', suscriptionSchema)
+module.exports = mongoose.model('Sensors', sensorsSchema)
