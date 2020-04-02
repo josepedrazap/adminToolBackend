@@ -402,6 +402,7 @@ exports.createReport = async (req, res) => {
   });
   await browser.close();
 
+  console.log("Antes de subir");
   uploadFile
     .upload({
       pdf: buffer,
