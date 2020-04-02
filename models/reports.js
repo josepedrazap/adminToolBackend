@@ -1,13 +1,13 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const { Schema } = mongoose
+const { Schema } = mongoose;
 
 const reportSchema = new Schema(
   {
     localID: {
       type: Schema.Types.ObjectId,
       default: null,
-      ref: 'localAdminTool'
+      ref: "Local"
     },
     datetimeInit: {
       type: Date,
@@ -21,30 +21,32 @@ const reportSchema = new Schema(
       type: Date,
       default: Date.now()
     },
-    materials: [{
-      materialID: {
-        type: String
-      },
-      quantity: {
-        type: Number
-      },
-      prev: {
-        type: Number
+    materials: [
+      {
+        materialID: {
+          type: String
+        },
+        quantity: {
+          type: Number
+        },
+        prev: {
+          type: Number
+        }
       }
-    }],
+    ],
     url: {
       type: String,
-      default: ''
+      default: ""
     },
     month: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   {
     minimize: false
   }
-)
+);
 
 // Export model
-module.exports = mongoose.model('Report', reportSchema)
+module.exports = mongoose.model("Report", reportSchema);

@@ -98,13 +98,15 @@ exports.createReport = async (req, res) => {
   const local = await Locals.findOne({ _id: localID }).populate("customerID");
   const company = local.customerID.brand + " " + local.name;
 
-  // const datetimeFinish = new Date(
-  //   req.query.datetimeFinish.replace(/['"]+/g, "")
-  // );
-  // const datetimeInit = new Date(req.query.datetimeInit.replace(/['"]+/g, ""));
-  const now = new Date();
-  const datetimeFinish = new Date();
-  const datetimeInit = new Date(now.getFullYear(), now.getMonth(), 0);
+  const datetimeFinish = new Date(
+    req.query.datetimeFinish.replace(/['"]+/g, "")
+  );
+  const datetimeInit = new Date(req.query.datetimeInit.replace(/['"]+/g, ""));
+
+  // Variables de desarrollo
+  // const now = new Date();
+  // const datetimeFinish = new Date();
+  // const datetimeInit = new Date(now.getFullYear(), now.getMonth(), 0);
 
   let monthTemp = datetimeInit.getMonth();
   let yearTemp = datetimeInit.getFullYear();
@@ -380,27 +382,12 @@ exports.createReport = async (req, res) => {
   //   acumulated
   // });
 
-  // const browser = await puppeteer.launch({
-  //   executablePath: "/usr/bin/google-chrome-stable",
-  //   headless: true,
-  //   args: ["--no-sandbox", "--disable-setuid-sandbox"]
-  // });
-  // const page = await browser.newPage();
-  // await page.setContent(html);
-  // const buffer = await page.pdf({
-  //   format: "A4",
-  //   printBackground: true,
-  //   margin: {
-  //     left: "0px",
-  //     top: "0px",
-  //     right: "0px",
-  //     bottom: "0px"
-  //   }
-  // });
-  // await browser.close();
-  // res.end(buffer);
-
-  const browser = await puppeteer.launch({ headless: true });
+  // VARIABLES DE PRODUCCION
+  const browser = await puppeteer.launch({
+    executablePath: "/usr/bin/google-chrome-stable",
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  });
   const page = await browser.newPage();
   await page.setContent(html);
   const buffer = await page.pdf({
@@ -414,16 +401,33 @@ exports.createReport = async (req, res) => {
     }
   });
   await browser.close();
-  //res.end(buffer);
 
   uploadFile
     .upload({
       pdf: buffer,
-      path: "pdfs",
+      path: "reports",
       ID: String(report._id)
     })
     .then(response => {
-      console.log(response);
-      res.redirect(response);
+      report.url = response;
+      report.save();
+      res.end(buffer);
     });
+
+  // VARIABLES DE DESARROLLO
+  // const browser = await puppeteer.launch({ headless: true });
+  // const page = await browser.newPage();
+  // await page.setContent(html);
+  // const buffer = await page.pdf({
+  //   format: "A4",
+  //   printBackground: true,
+  //   margin: {
+  //     left: "0px",
+  //     top: "0px",
+  //     right: "0px",
+  //     bottom: "0px"
+  //   }
+  // });
+  // await browser.close();
+  //res.end(buffer);
 };
