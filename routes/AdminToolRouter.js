@@ -30,7 +30,7 @@ router.get(
 );
 // reports
 router.get("/reports", authAdmin, reportsController.retriveReports);
-router.post("/reports", authAdmin, reportsController.createReport);
+router.post("/reports", reportsController.createReport);
 router.get(
   "/reports/getDataCreateReports",
   authAdmin,
@@ -75,7 +75,7 @@ router.post(
   authAdmin,
   auctionController.craeteRequest
 );
-router.get("/auction/confirm", authAdmin, auctionController.confirm);
+router.get("/auction/confirm", auctionController.confirm);
 
 //customers
 router.post("/customers", authAdmin, customerController.create);

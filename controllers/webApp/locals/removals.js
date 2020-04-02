@@ -74,9 +74,93 @@ exports.createRemoval = async (req, res) => {
 };
 
 exports.getRemovals = async (req, res) => {
-  const removals = await Removals.find({
+  const now = new Date();
+
+  var removals = await Removals.find({
     localID: req.entityID,
-    status: { $in: ["COMPLETE"] }
-  }).populate("transporterID");
+    datetimeRemoval: {
+      $gt: new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 1),
+      $lte: new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59)
+    },
+    status: { $in: ["COMPLETE", "PENDING_TRANS", "PENDING_PAYMENT"] }
+  })
+    .populate("transporterID")
+    .sort({ datetimeRemoval: "asc" });
+
+  const local = await Locals.findOne({ _id: req.entityID });
+
+  var dates = [];
+  const maxDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+
+  for (let i = 0; i < local.removals; i++) {
+    dates.push(
+      new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        (maxDate / local.removals) * (i + 1)
+      )
+    );
+  }
+
+  console.log(dates);
+  let lastDate = null;
+
+  let payload = [];
+
+  let maxLength = 0;
+
+  if (local.removals > removals.length) {
+    maxLength = local.removals;
+  } else {
+    maxLength = removals.length;
+  }
+  for (let i = 0; i < maxLength; i++) {
+    if (i < removals.length) {
+      lastDate = removals[i].datetimeRemoval;
+      payload.push(removals[i]);
+    } else {
+      if (new Date(dates[i]) >= new Date(lastDate)) {
+        payload.push({
+          status: "AVAILABLE",
+          datetimeRemoval: dates[i]
+        });
+      } else {
+        payload.push({
+          status: "AVAILABLE",
+          datetimeRemoval: lastDate
+        });
+      }
+    }
+  }
+  return res.status(200).send(payload);
+};
+
+exports.getPrevRemovals = async (req, res) => {
+  const now = new Date();
+
+  var removals = await Removals.find({
+    localID: req.entityID,
+    datetimeRemoval: {
+      $gt: new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 1),
+      $lte: new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59)
+    },
+    status: { $in: ["COMPLETE", "PENDING_TRANS", "PENDING_PAYMENT"] }
+  })
+    .populate("transporterID")
+    .sort({ datetimeRemoval: "asc" });
+
+  return res.status(200).send(removals);
+};
+
+exports.getHistoricRemovals = async (req, res) => {
+  const now = new Date();
+
+  var removals = await Removals.find({
+    localID: req.entityID,
+    status: { $in: ["COMPLETE", "PENDING_TRANS", "PENDING_PAYMENT"] }
+  })
+    .populate("transporterID")
+    .sort({ datetimeRemoval: "asc" });
+
   return res.status(200).send(removals);
 };

@@ -1,12 +1,24 @@
 const Removals = require("../../../models/removals");
 const ecoData = require("../../../files/ecoData.json");
-
+const Locals = require("../../../models/locals");
 exports.index = async (req, res) => {
   if (!req.query.dateInit || !req.query.dateFinish) {
     return res.status(406).send();
   }
   var dateInit = new Date(req.query.dateInit.replace(/['"]+/g, ""));
   var dateFinish = new Date(req.query.dateFinish.replace(/['"]+/g, ""));
+
+  let monthTemp = dateInit.getMonth();
+  let yearTemp = dateInit.getFullYear();
+
+  monthTemp = monthTemp - 1;
+  if (monthTemp < 0) {
+    yearTemp = yearTemp - 1;
+    monthTemp = 11;
+  }
+
+  const datetimeInitPrev = new Date(yearTemp, monthTemp, 1);
+  const datetimeFinishPrev = new Date(yearTemp, monthTemp + 1, 0, 23, 59, 59);
 
   const removals = await Removals.find({
     status: "COMPLETE",
@@ -21,7 +33,26 @@ exports.index = async (req, res) => {
       $match: {
         status: "COMPLETE",
         localID: req.entityID,
-        datetimeRemoval: { $lt: dateFinish, $gt: dateInit }
+        datetimeRemoval: { $lt: dateFinish, $gte: dateInit }
+      }
+    },
+    { $project: { _id: 0, materials: 1 } },
+    { $unwind: "$materials" },
+    {
+      $group: {
+        _id: "$materials.material",
+        quantity: { $sum: "$materials.quantity" }
+      }
+    },
+    { $sort: { quantity: -1 } }
+  ]);
+
+  const totalMaterialsPrev = await Removals.aggregate([
+    {
+      $match: {
+        status: "COMPLETE",
+        localID: req.entityID,
+        datetimeRemoval: { $lt: datetimeFinishPrev, $gte: datetimeInitPrev }
       }
     },
     { $project: { _id: 0, materials: 1 } },
@@ -56,5 +87,8 @@ exports.index = async (req, res) => {
     });
   });
 
-  return res.status(200).send({ totalMaterials, ecoeq, removals });
+  const local = await Locals.findOne({ _id: req.entityID });
+  return res
+    .status(200)
+    .send({ totalMaterials, ecoeq, removals, totalMaterialsPrev, local });
 };

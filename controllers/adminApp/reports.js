@@ -2,7 +2,7 @@ const Removals = require("../../models/removals");
 const Locals = require("../../models/locals");
 const Reports = require("../../models/reports");
 const ecoData = require("../../files/ecoData.json");
-// const pdf = require('html-pdf')
+const puppeteer = require("puppeteer");
 const fs = require("fs");
 const ejs = require("ejs");
 const uploadFile = require("../../services/uploadFile");
@@ -344,5 +344,23 @@ exports.createReport = async (req, res) => {
     acumulated
   });
 
-  return res.status(200).send(html);
+  console.log(html);
+
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.setContent(html);
+  const buffer = await page.pdf({
+    format: "A4",
+    printBackground: true,
+    margin: {
+      left: "0px",
+      top: "0px",
+      right: "0px",
+      bottom: "0px"
+    }
+  });
+  await browser.close();
+  res.end(buffer);
+
+  //return res.status(200).send(html);
 };
