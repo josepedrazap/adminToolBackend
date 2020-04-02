@@ -89,17 +89,22 @@ exports.loadDataCreateReport = async (req, res) => {
 };
 
 exports.createReport = async (req, res) => {
-  const localID = req.body.localID;
+  const localID = req.query.localID;
 
   if (localID === null) {
     return res.status(300).send([]);
   }
 
-  const local = await Locals.findOne({ _id: localID });
-  const datetimeFinish = new Date(
-    req.body.datetimeFinish.replace(/['"]+/g, "")
-  );
-  const datetimeInit = new Date(req.body.datetimeInit.replace(/['"]+/g, ""));
+  const local = await Locals.findOne({ _id: localID }).populate("customerID");
+  const company = local.customerID.brand + " " + local.name;
+
+  // const datetimeFinish = new Date(
+  //   req.query.datetimeFinish.replace(/['"]+/g, "")
+  // );
+  // const datetimeInit = new Date(req.query.datetimeInit.replace(/['"]+/g, ""));
+  const now = new Date();
+  const datetimeFinish = new Date();
+  const datetimeInit = new Date(now.getFullYear(), now.getMonth(), 0);
 
   let monthTemp = datetimeInit.getMonth();
   let yearTemp = datetimeInit.getFullYear();
@@ -137,6 +142,7 @@ exports.createReport = async (req, res) => {
     status: { $ne: "DELETED" }
   });
 
+  // GENERAR STRING DEL MES
   const year = datetimeInit.getFullYear();
   const months = [
     "Enero",
@@ -152,6 +158,7 @@ exports.createReport = async (req, res) => {
     "Diciembre"
   ];
   var month = "";
+
   if (datetimeInit.getMonth() === datetimeFinish.getMonth()) {
     month = months[datetimeInit.getMonth()];
   } else {
@@ -160,7 +167,7 @@ exports.createReport = async (req, res) => {
       " ~ " +
       months[datetimeFinish.getMonth()];
   }
-  const company = local.name;
+
   var data = [
     { materialID: "CEL", name: "Celulosa", quantity: 0, prev: 0, x: 0 },
     { materialID: "PLASTIC", name: "Plástico", quantity: 0, prev: 0, x: 0 },
@@ -271,6 +278,20 @@ exports.createReport = async (req, res) => {
     totalKilos += Math.round(element.quantity);
   });
 
+  // OUTLABEL
+
+  var dataOutlabel = "";
+  var labelsOutLabel = "";
+  var colorsOutlabel = "";
+  payload.forEach((element, i) => {
+    if (element.quantity) {
+      labelsOutLabel += '"' + element.name + '",';
+      dataOutlabel += Math.round(element.quantity) + ",";
+      colorsOutlabel += '"' + element.color + '",';
+    }
+  });
+
+  // METADATA DE ECOEQUIVALENCIAS
   total.forEach(element => {
     if (element.ID === "PETROL") {
       metadata.push(
@@ -290,11 +311,11 @@ exports.createReport = async (req, res) => {
 
   const outlabeledPie =
     "https://quickchart.io/chart?width=280&height=240&c={type:'doughnut',data:{labels:[" +
-    labels.substr(0, labels.length - 1) +
+    labelsOutLabel.substr(0, labelsOutLabel.length - 1) +
     "], datasets:[{label:'Materiales',data:[" +
-    dataActual.substr(0, dataActual.length - 1) +
+    dataOutlabel.substr(0, dataOutlabel.length - 1) +
     "], backgroundColor:[" +
-    colors.substr(0, colors.length - 1) +
+    colorsOutlabel.substr(0, colorsOutlabel.length - 1) +
     "]}]}, options: {legend: {labels: {fontSize: 9, boxWidth: 10}}}}";
 
   const acumulated =
@@ -344,11 +365,42 @@ exports.createReport = async (req, res) => {
     acumulated
   });
 
-  const browser = await puppeteer.launch({
-    executablePath: "/usr/bin/google-chrome-stable",
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"]
-  });
+  // res.render("pdf", {
+  //   ID: localID + "_" + report._id,
+  //   payload: payload.filter(element => element.v),
+  //   total,
+  //   year,
+  //   month,
+  //   company,
+  //   totalKilos,
+  //   qr,
+  //   data,
+  //   outlabeledPie,
+  //   metadata,
+  //   acumulated
+  // });
+
+  // const browser = await puppeteer.launch({
+  //   executablePath: "/usr/bin/google-chrome-stable",
+  //   headless: true,
+  //   args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  // });
+  // const page = await browser.newPage();
+  // await page.setContent(html);
+  // const buffer = await page.pdf({
+  //   format: "A4",
+  //   printBackground: true,
+  //   margin: {
+  //     left: "0px",
+  //     top: "0px",
+  //     right: "0px",
+  //     bottom: "0px"
+  //   }
+  // });
+  // await browser.close();
+  // res.end(buffer);
+
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   await page.setContent(html);
   const buffer = await page.pdf({
@@ -362,7 +414,16 @@ exports.createReport = async (req, res) => {
     }
   });
   await browser.close();
-  res.end(buffer);
+  //res.end(buffer);
 
-  //return res.status(200).send(html);
+  uploadFile
+    .upload({
+      pdf: buffer,
+      path: "pdfs",
+      ID: String(report._id)
+    })
+    .then(response => {
+      console.log(response);
+      res.redirect(response);
+    });
 };

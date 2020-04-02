@@ -29,8 +29,11 @@ router.get(
   removalsController.retriveRemovalsAuction
 );
 // reports
-router.get("/reports", authAdmin, reportsController.retriveReports);
+//router.get("/reports", authAdmin, reportsController.retriveReports);
 router.post("/reports", reportsController.createReport);
+
+router.get("/reports", reportsController.createReport);
+
 router.get(
   "/reports/getDataCreateReports",
   authAdmin,
