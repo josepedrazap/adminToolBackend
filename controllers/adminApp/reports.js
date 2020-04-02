@@ -344,12 +344,9 @@ exports.createReport = async (req, res) => {
     acumulated
   });
 
-  console.log(html);
-
   const browser = await puppeteer.launch({
+    executablePath: "/usr/bin/google-chrome-stable",
     headless: true,
-    executablePath:
-      "/home/sagar/workplace/scraping-demo/node_modules/puppeteer/.local-chromium/linux-599821/chrome-linux/chrome",
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
   });
   const page = await browser.newPage();
