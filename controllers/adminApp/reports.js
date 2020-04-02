@@ -89,7 +89,7 @@ exports.loadDataCreateReport = async (req, res) => {
 };
 
 exports.createReport = async (req, res) => {
-  const localID = req.query.localID;
+  const localID = req.body.localID;
 
   if (localID === null) {
     return res.status(300).send([]);
@@ -99,9 +99,9 @@ exports.createReport = async (req, res) => {
   const company = local.customerID.brand + " " + local.name;
 
   const datetimeFinish = new Date(
-    req.query.datetimeFinish.replace(/['"]+/g, "")
+    req.body.datetimeFinish.replace(/['"]+/g, "")
   );
-  const datetimeInit = new Date(req.query.datetimeInit.replace(/['"]+/g, ""));
+  const datetimeInit = new Date(req.body.datetimeInit.replace(/['"]+/g, ""));
 
   // Variables de desarrollo
   // const now = new Date();

@@ -32,7 +32,7 @@ router.get(
 //router.get("/reports", authAdmin, reportsController.retriveReports);
 router.post("/reports", reportsController.createReport);
 
-router.get("/reports", reportsController.createReport);
+router.get("/reports", reportsController.retriveReports);
 
 router.get(
   "/reports/getDataCreateReports",
