@@ -410,8 +410,12 @@ exports.createReport = async (req, res) => {
     })
     .then(response => {
       report.url = response;
+      console.log(response);
       report.save();
       res.end(buffer);
+    })
+    .catch(err => {
+      console.log(err);
     });
 
   // VARIABLES DE DESARROLLO
