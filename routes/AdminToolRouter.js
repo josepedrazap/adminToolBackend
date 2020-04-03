@@ -11,6 +11,7 @@ const usersController = require("../controllers/users");
 const customerController = require("../controllers/adminApp/customers");
 const toolsController = require("../controllers/tools");
 const auctionController = require("../controllers/adminApp/auction");
+const suscriptionsController = require("../controllers/adminApp/suscriptions");
 
 // removals
 router.get("/removals", authAdmin, removalsController.retriveRemovals);
@@ -30,10 +31,9 @@ router.get(
 );
 // reports
 //router.get("/reports", authAdmin, reportsController.retriveReports);
-router.post("/reports", reportsController.createReport);
-
-router.get("/reports", reportsController.retriveReports);
-
+router.post("/reports", authAdmin, reportsController.createReport);
+router.get("/reports", authAdmin, reportsController.retriveReports);
+router.delete("/reports", authAdmin, reportsController.deleteReport);
 router.get(
   "/reports/getDataCreateReports",
   authAdmin,
@@ -89,5 +89,13 @@ router.get("/customers/stats", authAdmin, customerController.stats);
 //tools
 // router.get("/tools", toolsController.aggregateCusmerIDToLocal);
 router.get("/tools", toolsController.aggregateStatusToTransporters);
+
+//Suscriptions
+router.get("/suscriptions", authAdmin, suscriptionsController.getSuscriptions);
+router.post(
+  "/suscriptions",
+  authAdmin,
+  suscriptionsController.createSuscription
+);
 
 module.exports = router;

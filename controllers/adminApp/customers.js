@@ -40,8 +40,13 @@ exports.update = (req, res) => {
 exports.retrieve = (req, res) => {
   Customers.find({ status: "READY" })
     .populate("localsID")
-    .exec((_err, customers) => {
+    .exec(async (_err, customers) => {
       if (customers) {
+        customers = await Locals.populate(customers, {
+          path: "localsID.suscriptionID",
+          model: "Suscription"
+        });
+
         customers.forEach(customer => {
           customer.localsID = customer.localsID.filter(
             local => local.status !== "DELETED"

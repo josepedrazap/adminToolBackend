@@ -97,12 +97,13 @@ exports.getRemovals = async (req, res) => {
       new Date(
         now.getFullYear(),
         now.getMonth(),
-        (maxDate / local.removals) * (i + 1)
+        (maxDate / local.removals) * (i + 1),
+        11,
+        0,
+        0
       )
     );
   }
-
-  console.log(dates);
   let lastDate = null;
 
   let payload = [];

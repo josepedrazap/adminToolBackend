@@ -8,7 +8,7 @@ const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 
-const AdminToolRouter = require("./routes/AdminToolRouter");
+const AdminToolRouter = require("./routes/adminToolRouter");
 const WebAppRouter = require("./routes/webAppRouter");
 
 const authRouter = require("./routes/auth");

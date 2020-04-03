@@ -29,6 +29,7 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
+  console.log(req.body);
   Locals.findOneAndUpdate({ _id: req.body._id }, req.body).exec(
     (_err, local) => {
       return res.status(200).send(local);
@@ -37,10 +38,15 @@ exports.update = (req, res) => {
 };
 
 exports.retrieve = async (req, res) => {
-  const customers = await Customers.find({ status: "READY" }).populate(
+  var customers = await Customers.find({ status: "READY" }).populate(
     "localsID"
   );
+  customers = await Locals.populate(customers, {
+    path: "localsID.suscriptionID",
+    model: "Suscription"
+  });
   const locals = [];
+
   await customers.forEach(customer => {
     customer.localsID.forEach(element => {
       if (element.status !== "DELETED") {

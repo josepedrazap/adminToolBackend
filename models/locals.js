@@ -33,6 +33,11 @@ const localSchema = new Schema(
       type: Number,
       default: 1.5
     },
+    suscriptionID: {
+      type: Schema.Types.ObjectId,
+      default: null,
+      ref: "Suscription"
+    },
     commune: {
       type: String,
       default: ""

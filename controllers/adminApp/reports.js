@@ -6,26 +6,7 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const ejs = require("ejs");
 const uploadFile = require("../../services/uploadFile");
-
-// const createPDF = (data) => {
-//   return new Promise((resolve, reject) => {
-//     var compiled = ejs.compile(
-//       fs.readFileSync('./views/pdf.ejs', 'utf8')
-//     )
-//     const ret = compiled({
-//       ...data
-//     })
-//     pdf
-//       .create(ret.toString())
-//       .toFile('./temp/reports/' + data.ID + '.pdf', (err, pdf) => {
-//         if (err) {
-//           reject(err)
-//         } else {
-//           resolve(pdf.filename)
-//         }
-//       })
-//   })
-// }
+const deleteObjectS3 = require("../../services/deleteObjectS3");
 
 exports.retriveReports = (req, res) => {
   Reports.find()
@@ -34,7 +15,16 @@ exports.retriveReports = (req, res) => {
       if (err) {
         return res.status(400).send();
       }
-      return res.status(200).send(reports);
+      Locals.populate(
+        reports,
+        {
+          path: "localID.customerID",
+          model: "Customer"
+        },
+        (_err, reports) => {
+          return res.status(200).send(reports);
+        }
+      );
     });
 };
 
@@ -331,6 +321,7 @@ exports.createReport = async (req, res) => {
     dataMedia.substr(0, dataMedia.length - 1) +
     '], backgroundColor: "KHAKI", borderColor: "KHAKI"}]}, options: {scales: {yAxes: [{ ticks: {fontSize: 9, stretch: 35}}], xAxes: [{ ticks: {fontSize: 9, stretch: 35}}]}, legend: {labels: {color: "black", fontSize: 9, stretch: 35}}}}';
 
+  // CREANDO REPORTE EN BASE DE DATOS
   const report = await Reports.create({
     materials: data,
     localID,
@@ -340,7 +331,9 @@ exports.createReport = async (req, res) => {
   });
 
   const qrtext =
-    "https://s3.amazonaws.com/accioncircular.com/reports/" +
+    "https://s3.amazonaws.com/" +
+    process.env.AWS_BUCKET_NAME +
+    "/reports/" +
     localID +
     "_" +
     report._id +
@@ -382,57 +375,77 @@ exports.createReport = async (req, res) => {
   //   acumulated
   // });
 
-  // VARIABLES DE PRODUCCION
-  const browser = await puppeteer.launch({
-    executablePath: "/usr/bin/google-chrome-stable",
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"]
-  });
-  const page = await browser.newPage();
-  await page.setContent(html);
-  const buffer = await page.pdf({
-    format: "A4",
-    printBackground: true,
-    margin: {
-      left: "0px",
-      top: "0px",
-      right: "0px",
-      bottom: "0px"
-    }
-  });
-  await browser.close();
+  var buffer = null;
+  if (process.env.ENV === "production") {
+    const browser = await puppeteer.launch({
+      executablePath: "/usr/bin/google-chrome-stable",
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
+    const page = await browser.newPage();
+    await page.setContent(html);
+    buffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: {
+        left: "0px",
+        top: "0px",
+        right: "0px",
+        bottom: "0px"
+      }
+    });
+    await browser.close();
+  } else {
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+    await page.setContent(html);
+    buffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: {
+        left: "0px",
+        top: "0px",
+        right: "0px",
+        bottom: "0px"
+      }
+    });
+    await browser.close();
+    res.end(buffer);
+  }
 
   console.log("Antes de subir");
   uploadFile
     .upload({
       pdf: buffer,
       path: "reports",
-      ID: String(report._id)
+      ID: String(localID) + "_" + String(report._id)
     })
     .then(response => {
       report.url = response;
-      console.log(response);
       report.save();
+      console.log(response);
+
       res.end(buffer);
     })
     .catch(err => {
       console.log(err);
     });
+};
 
-  // VARIABLES DE DESARROLLO
-  // const browser = await puppeteer.launch({ headless: true });
-  // const page = await browser.newPage();
-  // await page.setContent(html);
-  // const buffer = await page.pdf({
-  //   format: "A4",
-  //   printBackground: true,
-  //   margin: {
-  //     left: "0px",
-  //     top: "0px",
-  //     right: "0px",
-  //     bottom: "0px"
-  //   }
-  // });
-  // await browser.close();
-  //res.end(buffer);
+exports.deleteReport = async (req, res) => {
+  var report = await Reports.findOne({ _id: req.query.reportID });
+
+  if (report) {
+    deleteObjectS3
+      .index({
+        path: "reports",
+        name: String(report.localID) + "_" + String(report._id) + ".pdf"
+      })
+      .then(async response => {
+        report = await Reports.deleteOne({ _id: req.query.reportID });
+        return res.status(200).send();
+      });
+  } else {
+    return res.status(404).send();
+  }
 };
