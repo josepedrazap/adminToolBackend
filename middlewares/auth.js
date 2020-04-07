@@ -10,7 +10,6 @@ const isAuth = (req, res, next) => {
   service
     .decodeToken(token)
     .then(response => {
-      console.log(response);
       if (response.activate === 1) {
         req.userID = response.userID;
         req.userType = response.userType;

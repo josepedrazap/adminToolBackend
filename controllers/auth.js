@@ -33,7 +33,8 @@ exports.login = (req, res) => {
                 activate: user.activate,
                 name: user.name,
                 lastName: user.lastName,
-                phone: user.phone
+                phone: user.phone,
+                entityID: user.entityID
               });
             } else {
               res.status(401).send({

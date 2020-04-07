@@ -14,6 +14,7 @@ const WebAppRouter = require("./routes/webAppRouter");
 const authRouter = require("./routes/auth");
 const DataBase = require("./services/dataBase");
 const AuctionNotify = require("./services/auctionNotify");
+const SocketServices = require("./services/socketServices");
 require("dotenv").config();
 
 const app = express();
@@ -83,6 +84,10 @@ app.use((err, req, res, next) => {
 DataBase.init();
 
 AuctionNotify.exec();
+
+io.on("connection", socket => {
+  SocketServices.index(socket);
+});
 
 module.exports = {
   app,

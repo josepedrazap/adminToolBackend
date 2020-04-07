@@ -1,7 +1,7 @@
-const Locasl = require("../../../models/locals");
+const Locals = require("../../../models/locals");
 
-exports.getDataLocal = async (req, res) => {
-  const local = await Locasl.findOne({ _id: req.entityID })
+exports.getData = async (req, res) => {
+  const local = await Locals.findOne({ _id: req.entityID })
     .populate("customerID")
     .populate("suscriptionID");
   return res.status(200).send(local);

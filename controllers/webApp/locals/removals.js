@@ -75,7 +75,14 @@ exports.createRemoval = async (req, res) => {
 
 exports.getRemovals = async (req, res) => {
   const now = new Date();
-
+  console.log("enviando data");
+  res.io.emit(
+    "ok",
+    JSON.stringify({
+      type: "message",
+      text: "Buena, me conecte desde el back"
+    })
+  );
   var removals = await Removals.find({
     localID: req.entityID,
     datetimeRemoval: {

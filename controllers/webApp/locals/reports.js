@@ -2,7 +2,7 @@ const Locals = require("../../../models/locals");
 const Reports = require("../../../models/reports");
 
 exports.retriveReports = (req, res) => {
-  Reports.find()
+  Reports.find({ localID: req.entityID })
     .populate("localID")
     .exec((err, reports) => {
       if (err) {
