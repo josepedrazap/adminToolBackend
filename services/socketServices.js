@@ -13,7 +13,12 @@ const newChatMessage = async ({ socket, message }) => {
       type: "typing"
     })
   );
-  var response = await chatBot.chatAnswer(message.text);
+  var response = await chatBot.chatAnswer(
+    message.text,
+    message.entityID,
+    message.type,
+    socket
+  );
 
   setTimeout(() => {
     socket.emit(

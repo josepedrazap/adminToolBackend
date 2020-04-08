@@ -11,7 +11,10 @@ const reportsControllerLocal = require("../controllers/webApp/locals/reports");
 const adminControllerCustomer = require("../controllers/webApp/customers/admin");
 const dashboardControllerCustomer = require("../controllers/webApp/customers/dashboard");
 const localsControllerCustomer = require("../controllers/webApp/customers/locals");
-// removals
+
+// Removals
+router.post("/removals", auth, removalsControllerLocal.createRemoval);
+
 router.get("/removals", auth, removalsControllerLocal.getRemovals);
 router.get("/removals/prev", auth, removalsControllerLocal.getPrevRemovals);
 router.get(

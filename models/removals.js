@@ -11,7 +11,7 @@ const removalSchema = new Schema(
     },
     author: {
       type: String,
-      enum: ["ADMIN", "APPWEB", "SENSOR"]
+      enum: ["ADMIN", "WEBAPP", "SENSOR"]
     },
     transporterID: {
       type: Schema.Types.ObjectId,
@@ -32,6 +32,10 @@ const removalSchema = new Schema(
       default: Date.now()
     },
     datetimeRemoval: {
+      type: Date,
+      default: null
+    },
+    datetimeUser: {
       type: Date,
       default: null
     },
@@ -57,6 +61,14 @@ const removalSchema = new Schema(
     notes: {
       type: String,
       default: ""
+    },
+    urlImage: {
+      type: String,
+      default: ""
+    },
+    intent: {
+      type: String,
+      default: "EMPTY"
     },
     materials: [
       {

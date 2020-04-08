@@ -14,6 +14,7 @@ const WebAppRouter = require("./routes/webAppRouter");
 const authRouter = require("./routes/auth");
 const DataBase = require("./services/dataBase");
 const AuctionNotify = require("./services/auctionNotify");
+const CleanerDB = require("./services/cleanerDB");
 const SocketServices = require("./services/socketServices");
 require("dotenv").config();
 
@@ -80,11 +81,14 @@ app.use((err, req, res, next) => {
   res.render("error");
 });
 
-// Base de datos!!
+// BASE DE DATOS EN MONGO
 DataBase.init();
 
+// DEMONIOS
 AuctionNotify.exec();
+CleanerDB.exec();
 
+// MIDDLEWARE DE SOCKETS
 io.on("connection", socket => {
   SocketServices.index(socket);
 });
