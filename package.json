@@ -33,5 +33,9 @@
   },
   "devDependencies": {
     "nodemon": "^1.18.10"
+  },
+  "scripts": {
+    "deploy": "react-scripts build react-scripts build && aws s3 sync build/ s3://platform.accioncircular.com --profile ac",
+    "demoDeploy": "react-scripts build && aws s3 sync build/ s3://admiandemo.accioncircular.com --profile ac"
   }
 }
