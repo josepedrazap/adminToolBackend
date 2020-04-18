@@ -14,7 +14,7 @@ exports.exec = () => {
           datetimeRequest: { $lt: new Date(now - ttl) },
         },
         (_err, intents) => {
-          console.log(intents.n);
+          return;
         }
       );
     },

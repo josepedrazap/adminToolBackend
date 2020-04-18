@@ -26,30 +26,30 @@ exports.index = async (req, res) => {
   // CONSEGUIR LOS RETIROS DEL RANGO ACTUAL
   const removals = await Removals.find({
     status: "COMPLETE",
-    localID: { $in: locals.map(local => local._id) },
-    datetimeRemoval: { $lt: dateFinish, $gt: dateInit }
+    localID: { $in: locals.map((local) => local._id) },
+    datetimeRemoval: { $lt: dateFinish, $gt: dateInit },
   })
     .populate("localID")
     .populate("transporterID");
 
   // CONSEGUIR LOS MATERIALES DEL RANGO ANTERIOR
-  const totalMaterialsPrev = await Removals.aggregate([
+  const totalMaterialsPrevius = await Removals.aggregate([
     {
       $match: {
         status: "COMPLETE",
-        localID: { $in: locals.map(local => local._id) },
-        datetimeRemoval: { $lt: datetimeFinishPrev, $gt: datetimeInitPrev }
-      }
+        localID: { $in: locals.map((local) => local._id) },
+        datetimeRemoval: { $lt: datetimeFinishPrev, $gt: datetimeInitPrev },
+      },
     },
     { $project: { _id: 0, materials: 1 } },
     { $unwind: "$materials" },
     {
       $group: {
         _id: "$materials.material",
-        quantity: { $sum: "$materials.quantity" }
-      }
+        quantity: { $sum: "$materials.quantity" },
+      },
     },
-    { $sort: { quantity: -1 } }
+    { $sort: { quantity: -1 } },
   ]);
 
   //CONSEGUIR LOS RETIROS DE RANGO ACTUAL
@@ -57,19 +57,19 @@ exports.index = async (req, res) => {
     {
       $match: {
         status: "COMPLETE",
-        localID: { $in: locals.map(local => local._id) },
-        datetimeRemoval: { $lt: dateFinish, $gt: dateInit }
-      }
+        localID: { $in: locals.map((local) => local._id) },
+        datetimeRemoval: { $lt: dateFinish, $gt: dateInit },
+      },
     },
     { $project: { _id: 0, materials: 1 } },
     { $unwind: "$materials" },
     {
       $group: {
         _id: "$materials.material",
-        quantity: { $sum: "$materials.quantity" }
-      }
+        quantity: { $sum: "$materials.quantity" },
+      },
     },
-    { $sort: { quantity: -1 } }
+    { $sort: { quantity: -1 } },
   ]);
 
   var ecoeq = [
@@ -77,14 +77,14 @@ exports.index = async (req, res) => {
     { ID: "WATER", q: 0, unity: "L" },
     { ID: "PETROL", q: 0, unity: "L" },
     { ID: "ENERGY", q: 0, unity: "kWatt" },
-    { ID: "CO2", q: 0, unity: "Kg" }
+    { ID: "CO2", q: 0, unity: "Kg" },
   ];
 
-  totalMaterials.map(element => {
+  totalMaterials.map((element) => {
     let temp = ecoData.filter(
-      material => material.materialID === element._id
+      (material) => material.materialID === element._id
     )[0];
-    temp.savesPerKilogram.forEach(el => {
+    temp.savesPerKilogram.forEach((el) => {
       for (let i = 0; i < ecoeq.length; i++) {
         if (ecoeq[i].ID === el.ID) {
           ecoeq[i].q += el.quantity * element.quantity;
@@ -93,10 +93,7 @@ exports.index = async (req, res) => {
     });
   });
 
-  console.log(totalMaterials);
-  console.log(totalMaterialsPrev);
-
   return res
     .status(200)
-    .send({ totalMaterials, totalMaterialsPrev, ecoeq, removals, locals });
+    .send({ totalMaterials, totalMaterialsPrevius, ecoeq, removals, locals });
 };

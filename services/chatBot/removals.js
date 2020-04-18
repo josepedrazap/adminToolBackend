@@ -1,6 +1,7 @@
 const Removals = require("../../models/removals");
 const RemovalIntents = require("../../models/removalIntents");
 const Locals = require("../../models/locals");
+
 const days = [
   "domingo",
   "lunes",
@@ -25,6 +26,18 @@ const months = [
   "diciembre",
 ];
 
+const materials = [
+  { material: "CEL", quantity: 0 },
+  { material: "PLASTIC", quantity: 0 },
+  { material: "GLASS", quantity: 0 },
+  { material: "ALUMINIUM", quantity: 0 },
+  { material: "METALS", quantity: 0 },
+  { material: "TETRAPAK", quantity: 0 },
+  { material: "ORGANICS", quantity: 0 },
+  { material: "ELECTRONICS", quantity: 0 },
+  { material: "TEXTILS", quantity: 0 },
+];
+
 const ifRemovalsAvailables = async (entityID, date) => {
   const local = await Locals.findOne({ _id: entityID }).populate(
     "suscriptionID"
@@ -47,17 +60,6 @@ const ifRemovalsAvailables = async (entityID, date) => {
     return false;
   }
 };
-const materials = [
-  { material: "CEL", quantity: 0 },
-  { material: "PLASTIC", quantity: 0 },
-  { material: "GLASS", quantity: 0 },
-  { material: "ALUMINIUM", quantity: 0 },
-  { material: "METALS", quantity: 0 },
-  { material: "TETRAPAK", quantity: 0 },
-  { material: "ORGANICS", quantity: 0 },
-  { material: "ELECTRONICS", quantity: 0 },
-  { material: "TEXTILS", quantity: 0 },
-];
 
 exports.setRemovalFunction = async ({
   setRemoval,
@@ -80,7 +82,6 @@ exports.setRemovalFunction = async ({
           response =
             "Lo siento, nuestro horario de trabajo es de lunes a viernes de 10:00 a 18:00 Hrs";
         } else if ((date - now) / 3600000 < 48) {
-          console.log(date);
           response =
             "Lo siento, el retiro debe ser programado con al menos dos días de anticipación";
         } else if ((date - now) / 3600000 > 336) {
@@ -96,18 +97,29 @@ exports.setRemovalFunction = async ({
               action: "REDIRECT_TO_REMOVALS",
             };
           }
-          const intent = await RemovalIntents.create({
-            author: "WEBAPP",
-            datetimeRemoval: date,
-            localID: entityID,
-          });
 
+          // SUMAR 12 HORAS EN CASO DE SER NECESARIO
           var hour =
             date.getHours() < 6 ? date.getHours() + 12 : date.getHours();
           var minutes =
             date.getMinutes() < 10
               ? "0" + date.getMinutes()
               : date.getMinutes();
+
+          date = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            hour,
+            minutes
+          );
+
+          const intent = await RemovalIntents.create({
+            author: "WEBAPP",
+            datetimeRemoval: date,
+            localID: entityID,
+          });
+
           response =
             "Entendido. Para confirmar el retiro para el " +
             days[date.getDay()] +

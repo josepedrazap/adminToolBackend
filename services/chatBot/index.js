@@ -1,8 +1,8 @@
 const { Wit } = require("node-wit");
-const removals = require("./chatBot/removals");
+const removals = require("./removals");
 
 const client = new Wit({
-  accessToken: process.env.WIT_ACCESS_TOKEN
+  accessToken: process.env.WIT_ACCESS_TOKEN,
 });
 
 const firstEntityValue = (entities, entity) => {
@@ -18,7 +18,7 @@ const firstEntityValue = (entities, entity) => {
   return val;
 };
 
-exports.chatAnswer = async (text, entityID, type, socket) => {
+exports.chatAnswer = async ({ text, entityID, type, socket }) => {
   const data = await client.message(text);
   var response = "Disculpa, no entiendo lo que necesitas";
 
@@ -33,7 +33,7 @@ exports.chatAnswer = async (text, entityID, type, socket) => {
   if (setSession) {
     if (setSession === "LOGOUT") {
       socket.emit("newAction_" + entityID, {
-        action: "LOGOUT"
+        action: "LOGOUT",
       });
     }
     return "Hasta luego";
@@ -44,11 +44,11 @@ exports.chatAnswer = async (text, entityID, type, socket) => {
       setRemoval,
       datetime,
       entityID,
-      type
+      type,
     });
     if (resp.action !== "EMPTY") {
       socket.emit("newAction_" + entityID, {
-        action: resp.action
+        action: resp.action,
       });
     }
     return resp.response;

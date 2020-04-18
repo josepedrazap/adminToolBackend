@@ -1,32 +1,27 @@
 const chatBot = require("./chatBot");
 
-exports.index = socket => {
-  socket.on("newChatMessage", message => newChatMessage({ socket, message }));
+exports.index = (socket) => {
+  socket.on("NEW_CHAT_MESSAGE", (message) =>
+    newChatMessage({ socket, message })
+  );
 };
 
 const newChatMessage = async ({ socket, message }) => {
-  message = JSON.parse(message);
+  socket.emit("INCOMING_MESSAGE::" + message.entityID, {
+    type: "TYPING",
+  });
 
-  socket.emit(
-    "newChatMessage_" + message.entityID,
-    JSON.stringify({
-      type: "typing"
-    })
-  );
-  var response = await chatBot.chatAnswer(
-    message.text,
-    message.entityID,
-    message.type,
-    socket
-  );
+  var response = await chatBot.chatAnswer({
+    text: message.data,
+    entityID: message.entityID,
+    type: message.userType,
+    socket,
+  });
 
   setTimeout(() => {
-    socket.emit(
-      "newChatMessage_" + message.entityID,
-      JSON.stringify({
-        type: "message",
-        text: response
-      })
-    );
+    socket.emit("INCOMING_MESSAGE::" + message.entityID, {
+      type: "MESSAGE",
+      text: response,
+    });
   }, 500);
 };
