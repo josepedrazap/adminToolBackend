@@ -6,47 +6,47 @@ const customerSchema = new Schema(
   {
     brand: {
       type: String,
-      default: ""
+      default: "",
     },
     rut: {
       type: String,
-      default: ""
+      default: "",
     },
-    contactName: {
+    commune: {
       type: String,
-      default: ""
+      default: "",
     },
-    email: {
+    address: {
       type: String,
-      default: ""
-    },
-    phone: {
-      type: String,
-      default: ""
+      default: "",
     },
     localsID: [
       {
         type: Schema.Types.ObjectId,
         default: null,
-        ref: "Local"
-      }
+        ref: "Local",
+      },
     ],
     datetimeCreated: {
       type: Date,
-      default: Date.now()
+      default: Date.now(),
     },
     status: {
       type: String,
       default: "READY",
-      enum: ["READY", "DELETED"]
+      enum: ["READY", "DELETED"],
     },
     users: {
       type: Array,
-      default: []
-    }
+      default: [],
+    },
+    urlLogo: {
+      type: String,
+      default: "",
+    },
   },
   {
-    minimize: false
+    minimize: false,
   }
 );
 

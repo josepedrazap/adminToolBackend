@@ -1,10 +1,12 @@
 const Removals = require("../../../models/removals");
 const ecoData = require("../../../files/ecoData.json");
 const Locals = require("../../../models/locals");
+
 exports.index = async (req, res) => {
   if (!req.query.dateInit || !req.query.dateFinish) {
     return res.status(406).send();
   }
+
   var dateInit = new Date(req.query.dateInit.replace(/['"]+/g, ""));
   var dateFinish = new Date(req.query.dateFinish.replace(/['"]+/g, ""));
 
@@ -87,7 +89,9 @@ exports.index = async (req, res) => {
     });
   });
 
-  const local = await Locals.findOne({ _id: req.entityID });
+  const local = await Locals.findOne({ _id: req.entityID }).populate(
+    "suscriptionID"
+  );
   return res
     .status(200)
     .send({ totalMaterials, ecoeq, removals, totalMaterialsPrevius, local });

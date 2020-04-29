@@ -3,7 +3,9 @@ const express = require("express");
 const router = express.Router();
 
 const auth = require("../middlewares/auth");
-const removalsControllerLocal = require("../controllers/webApp/locals/removals");
+
+const removalsController = require("../controllers/webApp/removals");
+const profileController = require("../controllers/webApp/profile");
 const dashboardControllerLocal = require("../controllers/webApp/locals/dashboard");
 const adminControllerLocal = require("../controllers/webApp/locals/admin");
 const reportsControllerLocal = require("../controllers/webApp/locals/reports");
@@ -12,37 +14,21 @@ const adminControllerCustomer = require("../controllers/webApp/customers/admin")
 const dashboardControllerCustomer = require("../controllers/webApp/customers/dashboard");
 const localsControllerCustomer = require("../controllers/webApp/customers/locals");
 const reportsControllerCustomer = require("../controllers/webApp/customers/reports");
-const removalsControllerCustomer = require("../controllers/webApp/customers/removals");
 
 // Removals
-router.post("/removals", auth, removalsControllerLocal.createRemoval);
+router.post("/removals", auth, removalsController.createRemoval);
+router.get("/removals", auth, removalsController.getRemovals);
+router.get("/removals/previus", auth, removalsController.getPreviusRemovals);
+router.get("/removals/historic", auth, removalsController.getHistoricRemovals);
+router.post("/removals/setRating", auth, removalsController.setRemovalRating);
 
-router.get("/removals", auth, (req, res) => {
-  if (req.userType === "LOCAL") {
-    removalsControllerLocal.getRemovals(req, res);
-  } else {
-    removalsControllerCustomer.getRemovals(req, res);
-  }
-});
-
-router.get("/removals/prev", auth, (req, res) => {
-  if (req.userType === "LOCAL") {
-    removalsControllerLocal.getPrevRemovals(req, res);
-  } else {
-    removalsControllerCustomer.getPrevRemovals(req, res);
-  }
-});
-
-router.get("/removals/historic", auth, (req, res) => {
-  if (req.userType === "LOCAL") {
-    removalsControllerLocal.getHistoricRemovals(req, res);
-  } else {
-    removalsControllerCustomer.getHistoricRemovals(req, res);
-  }
-});
+// Profile
+router.post("/profile/changePassword", auth, profileController.changePassword);
+router.patch("/profile", auth, profileController.updateData);
+router.get("/profile", auth, profileController.getData);
 
 // Dashboard
-router.get("/dashboard", auth, (req, res, next) => {
+router.get("/dashboard", auth, (req, res) => {
   if (req.userType === "LOCAL") {
     dashboardControllerLocal.index(req, res);
   } else {
@@ -51,7 +37,7 @@ router.get("/dashboard", auth, (req, res, next) => {
 });
 
 //Admin
-router.get("/admin", auth, (req, res, next) => {
+router.get("/admin", auth, (req, res) => {
   if (req.userType === "LOCAL") {
     adminControllerLocal.getData(req, res);
   } else {

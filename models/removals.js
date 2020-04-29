@@ -7,41 +7,45 @@ const removalSchema = new Schema(
     localID: {
       type: Schema.Types.ObjectId,
       default: null,
-      ref: "Local"
+      ref: "Local",
     },
     author: {
       type: String,
-      enum: ["ADMIN", "WEBAPP", "SENSOR"]
+      enum: ["ADMIN", "WEBAPP", "SENSOR"],
     },
     transporterID: {
       type: Schema.Types.ObjectId,
       default: null,
-      ref: "Transporter"
+      ref: "Transporter",
     },
     lastModificationID: {
       type: Schema.Types.ObjectId,
       default: null,
-      ref: "User"
+      ref: "User",
     },
     datetimeLastModification: {
       type: Date,
-      default: Date.now()
+      default: Date.now(),
     },
     datetimeRequest: {
       type: Date,
-      default: Date.now()
+      default: Date.now(),
     },
     datetimeRemoval: {
       type: Date,
-      default: null
+      default: null,
     },
     datetimeUser: {
       type: Date,
-      default: null
+      default: null,
     },
     payment: {
       type: Number,
-      default: 0
+      default: 0,
+    },
+    rating: {
+      type: Number,
+      default: 0,
     },
     status: {
       type: String,
@@ -51,40 +55,34 @@ const removalSchema = new Schema(
         "PENDING_PAYMENT",
         "COMPLETE",
         "DELETED",
-        "IN_AUCTION"
-      ]
+        "IN_AUCTION",
+      ],
     },
     urlReport: {
       type: String,
-      default: null
+      default: null,
     },
     notes: {
       type: String,
-      default: ""
+      default: "",
     },
     urlImage: {
       type: String,
-      default: ""
+      default: "",
     },
     intent: {
       type: String,
-      default: "EMPTY"
+      default: "EMPTY",
     },
     materials: [
       {
-        material: {
-          type: String,
-          default: "PET"
-        },
-        quantity: {
-          type: Number,
-          default: 0
-        }
-      }
-    ]
+        material: String,
+        quantity: Number,
+      },
+    ],
   },
   {
-    minimize: false
+    minimize: false,
   }
 );
 

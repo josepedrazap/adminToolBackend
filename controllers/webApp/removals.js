@@ -1,6 +1,7 @@
-const Removals = require("../../../models/removals");
-const Locals = require("../../../models/locals");
-const ImageUpload = require("../../../services/imageUpload.js");
+const Removals = require("../../models/removals");
+const Locals = require("../../models/locals");
+const Materials = require("../../models/materials");
+const ImageUpload = require("../../services/imageUpload.js");
 
 const materials = [
   { material: "CEL", quantity: 0 },
@@ -14,12 +15,41 @@ const materials = [
   { material: "TEXTILS", quantity: 0 },
 ];
 
+const calculateOptimizedDates = (removals) => {
+  var dates = [];
+  const now = new Date();
+
+  // ÚLTIMO DÍA DEL MES. SE USA PARA REALIZAR LA DIVISIÓN DEL MES POR LA CANTIDAD DE RETIROS DEL LOCAL
+  const maxDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const today = now.getDate();
+
+  const lambda = (maxDate - today) / removals;
+
+  console.log(lambda);
+
+  // CONSIGUIENDO LAS FECHAS TENTATIVAS PARA PEDIR LOS RETIROS
+  for (let i = 0; i < removals; i++) {
+    dates.push(
+      new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        today + lambda * (i + 1),
+        11,
+        0,
+        0
+      )
+    );
+  }
+  return dates;
+};
+
 exports.createRemoval = async (req, res) => {
+  // const materials = await Materials.create({});
   Removals.create(
     {
       author: "WEBAPP",
       datetimeRemoval: req.body.datetimeRemoval,
-      localID: req.entity,
+      localID: req.body.localID,
       description: req.body.description,
       materials,
     },
@@ -30,11 +60,15 @@ exports.createRemoval = async (req, res) => {
             urlImage: req.body.image,
             path: "removalImages",
             id: removal._id,
-          }).then((response) => {
-            removal.image = response;
-            removal.save();
-            return res.status(200).send({ removal });
-          });
+          })
+            .then((response) => {
+              removal.image = response;
+              removal.save();
+              return res.status(200).send({ removal });
+            })
+            .catch((err) => {
+              return res.status(400).send();
+            });
         } else {
           return res.status(200).send({ removal });
         }
@@ -48,9 +82,8 @@ exports.createRemoval = async (req, res) => {
 exports.getRemovals = async (req, res) => {
   // CARGAR LOCAL
 
-  console.log(req.query.localID);
   if (req.query.localID === "ALL") {
-    return res.status(404).send();
+    return res.status(200).send([]);
   }
 
   const local = await Locals.findOne({ _id: req.query.localID }).populate(
@@ -61,80 +94,42 @@ exports.getRemovals = async (req, res) => {
     return res.status(407).send();
   }
 
-  const removalsLenth = local.suscriptionID.removals;
-
+  const removalsLength = local.suscriptionID.removals;
   const now = new Date();
 
-  // CONSEGUIR RETIROS
+  // CONSEGUIR RETIROS DEL MES
   var removals = await Removals.find({
-    localID: req.entityID,
+    localID: req.query.localID,
     datetimeRemoval: {
       $gt: new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 1),
       $lte: new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59),
     },
     status: { $in: ["COMPLETE", "PENDING_PAYMENT", "PENDING_TRANS"] },
   })
+    .populate("materialsID")
     .populate("transporterID")
     .sort({ datetimeRemoval: "asc" });
 
-  // VARIABLE QUE CONTENDRÁ LAS FECHAS TENTATIVAS PARA LOS RETIROS DEL MES
-  var dates = [];
-
-  // ÚLTIMO DÍA DEL MES. SE USA PARA REALIZAR LA DIVISIÓN DEL MES POR LA CANTIDAD DE RETIROS DEL LOCAL
-  const maxDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-
-  // CONSIGUIENDO LAS FECHAS TENTATIVAS PARA PEDIR LOS RETIROS
-  for (let i = 0; i < removalsLenth; i++) {
-    dates.push(
-      new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        (maxDate / removalsLenth) * (i + 1),
-        11,
-        0,
-        0
-      )
-    );
+  // CORE
+  var payload = [];
+  for (let i = 0; i < removals.length; i++) {
+    lastDate = removals[i].datetimeRemoval;
+    payload.push(removals[i]);
   }
-
-  // VARIABLE AUXILIAR PARA GUARDAR LA ULTIMA FECHA DEL CICLO
-  let lastDate = null;
-
-  // VARIABLE QUE ALOJA LA CARGA DE LA RESPUESTA
-  let payload = [];
-
-  // TAMAÑO DEL CICLO FOR. PUEDE SER POR LA CANTIDAD DE RETIROS REALIZADOS O POR LA CANTIDAD DE RETIROS PEDIDOS EN EL MES.
-  // NO SON NECESARIAMENTE IGUALES YA QUE EXISTEN LOS PEDIDOS EXTRAS
-  let maxLength = 0;
-
-  if (removalsLenth > removals.length) {
-    maxLength = removalsLenth;
-  } else {
-    maxLength = removals.length;
-  }
-
-  for (let i = 0; i < maxLength; i++) {
-    if (i < removals.length) {
-      lastDate = removals[i].datetimeRemoval;
-      payload.push(removals[i]);
-    } else {
-      if (new Date(dates[i]) >= new Date(lastDate)) {
+  if (removalsLength - removals.length > 0) {
+    calculateOptimizedDates(removalsLength - removals.length).forEach(
+      (date) => {
         payload.push({
           status: "AVAILABLE",
-          datetimeRemoval: dates[i],
-        });
-      } else {
-        payload.push({
-          status: "AVAILABLE",
-          datetimeRemoval: lastDate,
+          datetimeRemoval: date,
         });
       }
-    }
+    );
   }
   return res.status(200).send(payload);
 };
 
-exports.getPrevRemovals = async (req, res) => {
+exports.getPreviusRemovals = async (req, res) => {
   if (req.query.localID === "ALL") {
     return res.status(404).send();
   }
@@ -147,6 +142,7 @@ exports.getPrevRemovals = async (req, res) => {
     },
     status: { $in: ["COMPLETE", "PENDING_TRANS", "PENDING_PAYMENT"] },
   })
+    .populate("transporterID")
     .populate("transporterID")
     .sort({ datetimeRemoval: "asc" });
   return res.status(200).send(removals);
@@ -161,7 +157,16 @@ exports.getHistoricRemovals = async (req, res) => {
     status: { $in: ["COMPLETE", "PENDING_TRANS", "PENDING_PAYMENT"] },
   })
     .populate("transporterID")
+    .populate("transporterID")
     .sort({ datetimeRemoval: "asc" });
 
   return res.status(200).send(removals);
+};
+
+exports.setRemovalRating = async (req, res) => {
+  const removal = await Removals.findOneAndUpdate(
+    { _id: req.body.removalID },
+    { rating: req.body.rating }
+  );
+  return res.status(200).send(removal);
 };
