@@ -19,7 +19,7 @@ exports.retriveReports = (req, res) => {
         reports,
         {
           path: "localID.customerID",
-          model: "Customer"
+          model: "Customer",
         },
         (_err, reports) => {
           return res.status(200).send(reports);
@@ -46,9 +46,9 @@ exports.loadDataCreateReport = async (req, res) => {
       localID,
       datetimeRemoval: {
         $lt: new Date(req.query.datetimeFinish.replace(/['"]+/g, "")),
-        $gt: new Date(req.query.datetimeInit.replace(/['"]+/g, ""))
+        $gt: new Date(req.query.datetimeInit.replace(/['"]+/g, "")),
       },
-      status: { $ne: "DELETED" }
+      status: { $ne: "DELETED" },
     });
 
     // const reports = await Reports.find({ localID })
@@ -62,11 +62,11 @@ exports.loadDataCreateReport = async (req, res) => {
       { material: "TETRAPAK", quantity: 0 },
       { material: "ORGANICS", quantity: 0 },
       { material: "ELECTRONICS", quantity: 0 },
-      { material: "TEXTILS", quantity: 0 }
+      { material: "TEXTILS", quantity: 0 },
     ];
 
-    removals.forEach(element => {
-      element.materials.forEach(material => {
+    removals.forEach((element) => {
+      element.materials.forEach((material) => {
         for (let i = 0; i < data.length; i++) {
           if (data[i].material === material.material) {
             data[i].quantity += material.quantity;
@@ -114,24 +114,24 @@ exports.createReport = async (req, res) => {
     localID,
     datetimeRemoval: {
       $lt: datetimeFinish,
-      $gt: datetimeInit
+      $gt: datetimeInit,
     },
-    status: { $ne: "DELETED" }
+    status: { $ne: "DELETED" },
   });
   const removalsPrev = await Removals.find({
     localID,
     datetimeRemoval: {
       $lt: datetimeFinishPrev,
-      $gt: datetimeInitPrev
+      $gt: datetimeInitPrev,
     },
-    status: { $ne: "DELETED" }
+    status: { $ne: "DELETED" },
   });
   const removalsHistoric = await Removals.find({
     localID,
     datetimeRemoval: {
-      $lt: datetimeInit
+      $lt: datetimeInit,
     },
-    status: { $ne: "DELETED" }
+    status: { $ne: "DELETED" },
   });
 
   // GENERAR STRING DEL MES
@@ -147,7 +147,7 @@ exports.createReport = async (req, res) => {
     "Septiembre",
     "Octubre",
     "Noviembre",
-    "Diciembre"
+    "Diciembre",
   ];
   var month = "";
 
@@ -173,13 +173,13 @@ exports.createReport = async (req, res) => {
       name: "Electrónicos",
       quantity: 0,
       prev: 0,
-      x: 0
+      x: 0,
     },
-    { materialID: "TEXTILS", name: "Textiles", quantity: 0, prev: 0, x: 0 }
+    { materialID: "TEXTILS", name: "Textiles", quantity: 0, prev: 0, x: 0 },
   ];
 
-  removalsActual.forEach(element => {
-    element.materials.forEach(material => {
+  removalsActual.forEach((element) => {
+    element.materials.forEach((material) => {
       for (let i = 0; i < data.length; i++) {
         if (data[i].materialID === material.material) {
           data[i].quantity += material.quantity * 1;
@@ -187,8 +187,8 @@ exports.createReport = async (req, res) => {
       }
     });
   });
-  removalsPrev.forEach(element => {
-    element.materials.forEach(material => {
+  removalsPrev.forEach((element) => {
+    element.materials.forEach((material) => {
       for (let i = 0; i < data.length; i++) {
         if (data[i].materialID === material.material) {
           data[i].prev += material.quantity * 1;
@@ -196,8 +196,8 @@ exports.createReport = async (req, res) => {
       }
     });
   });
-  removalsHistoric.forEach(element => {
-    element.materials.forEach(material => {
+  removalsHistoric.forEach((element) => {
+    element.materials.forEach((material) => {
       for (let i = 0; i < data.length; i++) {
         if (data[i].materialID === material.material) {
           data[i].x += (material.quantity * 1) / removalsHistoric.length;
@@ -214,12 +214,12 @@ exports.createReport = async (req, res) => {
     { ID: "WATER", q: 0, unity: "L" },
     { ID: "PETROL", q: 0, unity: "L" },
     { ID: "ENERGY", q: 0, unity: "kWatt" },
-    { ID: "CO2", q: 0, unity: "Kg" }
+    { ID: "CO2", q: 0, unity: "Kg" },
   ];
 
-  data.map(element => {
+  data.map((element) => {
     let temp = ecoData.filter(
-      material => material.materialID === element.materialID
+      (material) => material.materialID === element.materialID
     )[0];
     payload.push({
       material: temp.materialID,
@@ -229,23 +229,23 @@ exports.createReport = async (req, res) => {
       v: !!parseInt(element.quantity),
       quantity: element.quantity,
       color: temp.color,
-      data: temp.savesPerKilogram.map(spk => {
+      data: temp.savesPerKilogram.map((spk) => {
         return {
           name: spk.name,
           quantity:
             Math.round(spk.quantity * element.quantity) + " " + spk.unity,
           q: Math.round(spk.quantity * element.quantity),
           ID: spk.ID,
-          unity: spk.unity
+          unity: spk.unity,
         };
-      })
+      }),
     });
   });
 
   payload
-    .filter(element => element.v)
-    .forEach(data => {
-      data.data.forEach(element => {
+    .filter((element) => element.v)
+    .forEach((data) => {
+      data.data.forEach((element) => {
         total.forEach((el, i) => {
           if (el.ID === element.ID) {
             total[i].q += element.q;
@@ -284,7 +284,7 @@ exports.createReport = async (req, res) => {
   });
 
   // METADATA DE ECOEQUIVALENCIAS
-  total.forEach(element => {
+  total.forEach((element) => {
     if (element.ID === "PETROL") {
       metadata.push(
         "Con el petróleo ahorrado un vehículo puede andar " +
@@ -327,7 +327,7 @@ exports.createReport = async (req, res) => {
     localID,
     datetimeInit,
     datetimeFinish,
-    month
+    month,
   });
 
   const qrtext =
@@ -347,7 +347,7 @@ exports.createReport = async (req, res) => {
 
   var html = compiled({
     ID: localID + "_" + report._id,
-    payload: payload.filter(element => element.v),
+    payload: payload.filter((element) => element.v),
     total,
     year,
     month,
@@ -357,7 +357,7 @@ exports.createReport = async (req, res) => {
     data,
     outlabeledPie,
     metadata,
-    acumulated
+    acumulated,
   });
 
   // res.render("pdf", {
@@ -380,7 +380,7 @@ exports.createReport = async (req, res) => {
     const browser = await puppeteer.launch({
       executablePath: "/usr/bin/google-chrome-stable",
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     const page = await browser.newPage();
     await page.setContent(html);
@@ -391,8 +391,8 @@ exports.createReport = async (req, res) => {
         left: "0px",
         top: "0px",
         right: "0px",
-        bottom: "0px"
-      }
+        bottom: "0px",
+      },
     });
     await browser.close();
   } else {
@@ -406,28 +406,27 @@ exports.createReport = async (req, res) => {
         left: "0px",
         top: "0px",
         right: "0px",
-        bottom: "0px"
-      }
+        bottom: "0px",
+      },
     });
     await browser.close();
     res.end(buffer);
   }
 
-  console.log("Antes de subir");
   uploadFile
     .upload({
       pdf: buffer,
       path: "reports",
-      ID: String(localID) + "_" + String(report._id)
+      ID: String(localID) + "_" + String(report._id),
     })
-    .then(response => {
+    .then((response) => {
       report.url = response;
       report.save();
       console.log(response);
 
       res.end(buffer);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
@@ -439,9 +438,9 @@ exports.deleteReport = async (req, res) => {
     deleteObjectS3
       .index({
         path: "reports",
-        name: String(report.localID) + "_" + String(report._id) + ".pdf"
+        name: String(report.localID) + "_" + String(report._id) + ".pdf",
       })
-      .then(async response => {
+      .then(async (response) => {
         report = await Reports.deleteOne({ _id: req.query.reportID });
         return res.status(200).send();
       });
