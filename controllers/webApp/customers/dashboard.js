@@ -2,6 +2,7 @@ const Customers = require("../../../models/customers");
 const Locals = require("../../../models/locals");
 const Removals = require("../../../models/removals");
 const ecoData = require("../../../files/ecoData.json");
+const removalsQ = require("../../../queries/removalsQueries");
 
 exports.index = async (req, res) => {
   //SETUP DE FECHAS. CONSEGUIR LOS MESES
@@ -25,7 +26,7 @@ exports.index = async (req, res) => {
 
   // CONSEGUIR LOS RETIROS DEL RANGO ACTUAL
   const removals = await Removals.find({
-    status: "COMPLETE",
+    ...removalsQ.removalQueries["COMPLETE"],
     localID: { $in: locals.map((local) => local._id) },
     datetimeRemoval: { $lt: dateFinish, $gt: dateInit },
   })
@@ -36,7 +37,7 @@ exports.index = async (req, res) => {
   const totalMaterialsPrevius = await Removals.aggregate([
     {
       $match: {
-        status: "COMPLETE",
+        ...removalsQ.removalQueries["COMPLETE"],
         localID: { $in: locals.map((local) => local._id) },
         datetimeRemoval: { $lt: datetimeFinishPrev, $gt: datetimeInitPrev },
       },
@@ -56,7 +57,7 @@ exports.index = async (req, res) => {
   const totalMaterials = await Removals.aggregate([
     {
       $match: {
-        status: "COMPLETE",
+        ...removalsQ.removalQueries["COMPLETE"],
         localID: { $in: locals.map((local) => local._id) },
         datetimeRemoval: { $lt: dateFinish, $gt: dateInit },
       },

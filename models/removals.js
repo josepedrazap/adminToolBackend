@@ -11,7 +11,7 @@ const removalSchema = new Schema(
     },
     author: {
       type: String,
-      enum: ["ADMIN", "WEBAPP", "SENSOR"],
+      enum: ["ADMIN", "WEBAPP_SUSCRIPTION", "WEBAPP_EXTRA", "SENSOR"],
     },
     transporterID: {
       type: Schema.Types.ObjectId,

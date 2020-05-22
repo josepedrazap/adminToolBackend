@@ -15,7 +15,7 @@ const suscriptionsController = require("../controllers/adminApp/suscriptions");
 
 // removals
 router.get("/removals", authAdmin, removalsController.retriveRemovals);
-router.patch("/removals", authAdmin, removalsController.createRemoval);
+router.patch("/removals", authAdmin, removalsController.patchRemoval);
 router.get(
   "/removals/getDataCreateRemoval",
   authAdmin,
@@ -23,8 +23,8 @@ router.get(
 );
 router.delete("/removals", authAdmin, removalsController.deleteRemoval);
 router.get("/removals/stats", authAdmin, removalsController.statsRemovals);
-router.get("/removals/tempremoval", removalsController.tempremovals);
-router.get("/removals/index", removalsController.index);
+router.get("/removals/tempremoval", authAdmin, removalsController.tempremovals);
+router.get("/removals/cards", authAdmin, removalsController.cards);
 router.get(
   "/removals/removalAuction",
   removalsController.retriveRemovalsAuction
@@ -87,8 +87,8 @@ router.patch("/customers", authAdmin, customerController.update);
 router.delete("/customers", authAdmin, customerController.delete);
 router.get("/customers/stats", authAdmin, customerController.stats);
 //tools
-// router.get("/tools", toolsController.aggregateCusmerIDToLocal);
-router.get("/tools", toolsController.aggregateStatusToTransporters);
+router.get("/tools", toolsController.createReport);
+//router.get("/tools", toolsController.aggregateStatusToTransporters);
 
 //Suscriptions
 router.get("/suscriptions", authAdmin, suscriptionsController.getSuscriptions);

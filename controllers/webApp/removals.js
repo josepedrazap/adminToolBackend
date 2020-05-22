@@ -2,6 +2,7 @@ const Removals = require("../../models/removals");
 const Locals = require("../../models/locals");
 const Materials = require("../../models/materials");
 const ImageUpload = require("../../services/imageUpload.js");
+const removalsQ = require("../../queries/removalsQueries");
 
 const materials = [
   { material: "CEL", quantity: 0 },
@@ -47,7 +48,7 @@ exports.createRemoval = async (req, res) => {
   // const materials = await Materials.create({});
   Removals.create(
     {
-      author: "WEBAPP",
+      author: "WEBAPP_SUSCRIPTION",
       datetimeRemoval: req.body.datetimeRemoval,
       localID: req.body.localID,
       description: req.body.description,
@@ -104,7 +105,7 @@ exports.getRemovals = async (req, res) => {
       $gt: new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 1),
       $lte: new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59),
     },
-    status: { $in: ["COMPLETE", "PENDING_PAYMENT", "PENDING_TRANS"] },
+    status: { $ne: "DELETED" },
   })
     .populate("materialsID")
     .populate("transporterID")
@@ -131,7 +132,7 @@ exports.getRemovals = async (req, res) => {
 
 exports.getPreviusRemovals = async (req, res) => {
   if (req.query.localID === "ALL") {
-    return res.status(404).send();
+    return res.status(200).send([]);
   }
   const now = new Date();
   var removals = await Removals.find({
@@ -150,13 +151,13 @@ exports.getPreviusRemovals = async (req, res) => {
 
 exports.getHistoricRemovals = async (req, res) => {
   if (req.query.localID === "ALL") {
-    return res.status(404).send();
+    return res.status(200).send([]);
   }
   var removals = await Removals.find({
+    ...removalsQ.removalQueries["COMPLETE"],
     localID: req.query.localID,
-    status: { $in: ["COMPLETE", "PENDING_TRANS", "PENDING_PAYMENT"] },
+    status: { $ne: "DELETED" },
   })
-    .populate("transporterID")
     .populate("transporterID")
     .sort({ datetimeRemoval: "asc" });
 

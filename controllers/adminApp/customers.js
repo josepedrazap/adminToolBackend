@@ -6,17 +6,18 @@ const ecoData = require("../../files/ecoData.json");
 exports.create = (req, res) => {
   var data = req.body;
 
+  console.log(data.customer);
   Customers.create(data.customer, (_err, customer) => {
     if (customer) {
-      data.locals = data.locals.map(local => {
+      data.locals = data.locals.map((local) => {
         return {
           ...local,
-          customerID: customer._id
+          customerID: customer._id,
         };
       });
       Locals.create(data.locals, (_err, locals) => {
         if (locals) {
-          customer.localsID = locals.map(local => local._id);
+          customer.localsID = locals.map((local) => local._id);
           customer.save();
           return res.status(200).send(customer);
         } else {
@@ -44,12 +45,12 @@ exports.retrieve = (req, res) => {
       if (customers) {
         customers = await Locals.populate(customers, {
           path: "localsID.suscriptionID",
-          model: "Suscription"
+          model: "Suscription",
         });
 
-        customers.forEach(customer => {
+        customers.forEach((customer) => {
           customer.localsID = customer.localsID.filter(
-            local => local.status !== "DELETED"
+            (local) => local.status !== "DELETED"
           );
         });
         return res.status(200).send(customers);
@@ -82,8 +83,8 @@ exports.stats = async (req, res) => {
 
   const removals = await Removals.find({
     status: "COMPLETE",
-    localID: { $in: locals.map(local => local._id) },
-    datetimeRemoval: { $lt: dateFinish, $gt: dateInit }
+    localID: { $in: locals.map((local) => local._id) },
+    datetimeRemoval: { $lt: dateFinish, $gt: dateInit },
   })
     .populate("localID")
     .populate("transporterID");
@@ -92,19 +93,19 @@ exports.stats = async (req, res) => {
     {
       $match: {
         status: "COMPLETE",
-        localID: { $in: locals.map(local => local._id) },
-        datetimeRemoval: { $lt: dateFinish, $gt: dateInit }
-      }
+        localID: { $in: locals.map((local) => local._id) },
+        datetimeRemoval: { $lt: dateFinish, $gt: dateInit },
+      },
     },
     { $project: { _id: 0, materials: 1 } },
     { $unwind: "$materials" },
     {
       $group: {
         _id: "$materials.material",
-        quantity: { $sum: "$materials.quantity" }
-      }
+        quantity: { $sum: "$materials.quantity" },
+      },
     },
-    { $sort: { quantity: -1 } }
+    { $sort: { quantity: -1 } },
   ]);
 
   var ecoeq = [
@@ -112,14 +113,14 @@ exports.stats = async (req, res) => {
     { ID: "WATER", q: 0, unity: "L" },
     { ID: "PETROL", q: 0, unity: "L" },
     { ID: "ENERGY", q: 0, unity: "kWatt" },
-    { ID: "CO2", q: 0, unity: "Kg" }
+    { ID: "CO2", q: 0, unity: "Kg" },
   ];
 
-  totalMaterials.map(element => {
+  totalMaterials.map((element) => {
     let temp = ecoData.filter(
-      material => material.materialID === element._id
+      (material) => material.materialID === element._id
     )[0];
-    temp.savesPerKilogram.forEach(el => {
+    temp.savesPerKilogram.forEach((el) => {
       for (let i = 0; i < ecoeq.length; i++) {
         if (ecoeq[i].ID === el.ID) {
           ecoeq[i].q += el.quantity * element.quantity;

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const { clean } = require("rut.js");
 const { Schema } = mongoose;
 
 const customerSchema = new Schema(
@@ -9,6 +9,26 @@ const customerSchema = new Schema(
       default: "",
     },
     rut: {
+      type: String,
+      default: "",
+    },
+    businessName: {
+      type: String,
+      default: "",
+    },
+    businessActivity: {
+      type: String,
+      default: "",
+    },
+    addressSociety: {
+      type: String,
+      default: "",
+    },
+    legalRepresentName: {
+      type: String,
+      default: "",
+    },
+    legalRepresentRut: {
       type: String,
       default: "",
     },
@@ -49,6 +69,11 @@ const customerSchema = new Schema(
     minimize: false,
   }
 );
+
+customerSchema.pre("save", function (next) {
+  this.rut = clean(this.rut);
+  next();
+});
 
 // Export model
 module.exports = mongoose.model("Customer", customerSchema);

@@ -2,51 +2,55 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
-const reportSchema = new Schema(
+const ReportSchema = new Schema(
   {
     localID: {
       type: Schema.Types.ObjectId,
       default: null,
-      ref: "Local"
+      ref: "Local",
     },
     datetimeInit: {
       type: Date,
-      default: null
+      default: null,
     },
     datetimeFinish: {
       type: Date,
-      default: null
+      default: null,
     },
     datetimeCreated: {
       type: Date,
-      default: Date.now()
+      default: Date.now(),
+    },
+    payload: {
+      type: String,
     },
     materials: [
       {
         materialID: {
-          type: String
+          type: String,
         },
         quantity: {
-          type: Number
+          type: Number,
         },
         prev: {
-          type: Number
-        }
-      }
+          type: Number,
+        },
+      },
     ],
     url: {
       type: String,
-      default: ""
+      default: "",
     },
+    dateRange: { type: String },
     month: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   {
-    minimize: false
+    minimize: false,
   }
 );
 
 // Export model
-module.exports = mongoose.model("Report", reportSchema);
+module.exports = mongoose.model("Report", ReportSchema);
