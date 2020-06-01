@@ -2,11 +2,13 @@ const Customers = require("../../models/customers");
 const Locals = require("../../models/locals");
 const Removals = require("../../models/removals");
 const ecoData = require("../../files/ecoData.json");
+const removalsQ = require("../../queries/removalsQueries");
+
+const removalQueries = removalsQ.removalQueries;
 
 exports.create = (req, res) => {
   var data = req.body;
 
-  console.log(data.customer);
   Customers.create(data.customer, (_err, customer) => {
     if (customer) {
       data.locals = data.locals.map((local) => {
@@ -31,6 +33,7 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
+  console.log(req.body);
   Customers.findOneAndUpdate({ _id: req.body._id }, req.body).exec(
     (_err, customer) => {
       return res.status(200).send(customer);
@@ -82,7 +85,7 @@ exports.stats = async (req, res) => {
   const locals = await Locals.find({ customerID: req.query.customerID });
 
   const removals = await Removals.find({
-    status: "COMPLETE",
+    ...removalQueries["COMPLETE"],
     localID: { $in: locals.map((local) => local._id) },
     datetimeRemoval: { $lt: dateFinish, $gt: dateInit },
   })
@@ -92,7 +95,7 @@ exports.stats = async (req, res) => {
   const totalMaterials = await Removals.aggregate([
     {
       $match: {
-        status: "COMPLETE",
+        ...removalQueries["COMPLETE"],
         localID: { $in: locals.map((local) => local._id) },
         datetimeRemoval: { $lt: dateFinish, $gt: dateInit },
       },
@@ -128,12 +131,5 @@ exports.stats = async (req, res) => {
       }
     });
   });
-  // ecoeq = {
-  //   tree: ecoeq[0].q,
-  //   water: ecoeq[1].q,
-  //   petrol: ecoeq[2].q,
-  //   energy: ecoeq[3].q,
-  //   co2: ecoeq[4].q
-  // };
   return res.status(200).send({ totalMaterials, ecoeq, removals });
 };

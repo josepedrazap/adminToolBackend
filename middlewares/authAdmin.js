@@ -1,31 +1,31 @@
-const service = require('../services/index')
+const service = require("../services/index");
 
-function isAuth (req, res, next) {
+function isAuth(req, res, next) {
   if (!req.headers.authorization) {
     return res.status(403).send({
-      error: 'NOT_AUTHORIZED'
-    })
+      error: "NOT_AUTHORIZED",
+    });
   }
-  const token = req.headers.authorization
+  const token = req.headers.authorization;
   service
     .decodeToken(token)
-    .then(response => {
-      if (response.userType === 'ADMIN') {
-        req.userID = response.userID
-        req.userType = response.userType
-        req.entityID = response.entityID
-        req.tokenID = response.tokenID
-        next()
+    .then((response) => {
+      if (response.userType === "ADMIN") {
+        req.userID = response.userID;
+        req.userType = response.userType;
+        req.entityID = response.entityID;
+        req.tokenID = response.tokenID;
+        next();
       } else {
         res.status(403).send({
-          error: 'NOT_CREDENTIALS'
-        })
+          error: "NOT_CREDENTIALS",
+        });
       }
     })
-    .catch(response => {
+    .catch((response) => {
       res.status(response.status).send({
-        error: response.message
-      })
-    })
+        error: response.message,
+      });
+    });
 }
-module.exports = isAuth
+module.exports = isAuth;

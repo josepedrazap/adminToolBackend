@@ -80,6 +80,10 @@ const removalSchema = new Schema(
         quantity: Number,
       },
     ],
+    timeWindow: {
+      type: String,
+      default: "A",
+    },
   },
   {
     minimize: false,

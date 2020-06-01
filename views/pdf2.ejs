@@ -1,695 +1,842 @@
 <html lang="es">
-
-<head>
+  <head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
 
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: sans-serif;
-        }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
 
-        h5 {
-            font-family: sans-serif;
-        }
+      h5 {
+        font-family: sans-serif;
+      }
 
-        /* Create two equal columns that floats next to each other */
+      /* Create two equal columns that floats next to each other */
 
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
 
-        * {
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+      }
 
+      .page {
+        position: relative;
+        width: 21cm;
+        min-height: 29.7cm;
+        margin: 1cm auto;
+        border: 1px #d3d3d3 solid;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        background-blend-mode: screen;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .footerImage {
+        position: absolute;
+        width: 100%;
+        bottom: -280;
+        left: 0;
+      }
+
+      .logoImagePort {
+        position: relative;
+        top: 220;
+        width: 45%;
+        margin: auto;
+        display: block;
+      }
+
+      .logoImageBack {
+        position: relative;
+        top: 180;
+        width: 45%;
+        margin: auto;
+        display: block;
+      }
+
+      .logoHeaderImage {
+        position: relative;
+        top: 30;
+        width: 22%;
+        margin-left: 30;
+      }
+
+      .prefooterImage {
+        position: relative;
+        top: 540;
+        display: block;
+        margin: auto;
+        width: 60%;
+      }
+
+      .ecoeqImage {
+        position: relative;
+        height: 60;
+        display: block;
+        margin: auto;
+      }
+
+      .documentTitle {
+        position: relative;
+        top: 300;
+        text-align: center;
+        /* color: #303f9f */
+      }
+
+      .documentTitleBack {
+        position: relative;
+        top: 300;
+        text-align: center;
+        /* color: #303f9f */
+      }
+
+      .documentSubtitle {
+        text-align: center;
+        position: relative;
+        top: 390;
+      }
+
+      .documentSubtitleBack {
+        text-align: center;
+        position: relative;
+        top: 340;
+      }
+
+      .imageLogo {
+        margin-top: 24;
+      }
+
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background: #b4ffc7;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      @media print {
         .page {
-            position: relative;
-            width: 21cm;
-            min-height: 29.7cm;
-            margin: 1cm auto;
-            border: 1px #d3d3d3 solid;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            background-blend-mode: screen;
-            background-repeat: no-repeat;
-            background-size: cover;
+          margin: 0;
+          border: initial;
+          border-radius: initial;
+          width: initial;
+          /* min-height: initial; */
+          box-shadow: initial;
+          background: initial;
+          page-break-after: always;
         }
-
-        .footerImage {
-            position: absolute;
-            width: 100%;
-            bottom: -280;
-            left: 0;
-        }
-
-        .logoImagePort {
-            position: relative;
-            top: 220;
-            width: 45%;
-            margin: auto;
-            display: block;
-        }
-
-
-        .logoImageBack {
-            position: relative;
-            top: 180;
-            width: 45%;
-            margin: auto;
-            display: block;
-        }
-
-        .logoHeaderImage {
-            position: relative;
-            top: 30;
-            width: 22%;
-            margin-left: 30;
-        }
-
-        .prefooterImage {
-            position: relative;
-            top: 540;
-            display: block;
-            margin: auto;
-            width: 60%;
-        }
-
-        .ecoeqImage {
-            position: relative;
-            height: 60;
-            display: block;
-            margin: auto;
-        }
-
-        .documentTitle {
-            position: relative;
-            top: 300;
-            text-align: center;
-            /* color: #303f9f */
-        }
-
-        .documentTitleBack {
-            position: relative;
-            top: 300;
-            text-align: center;
-            /* color: #303f9f */
-        }
-
-        .documentSubtitle {
-            text-align: center;
-            position: relative;
-            top: 390;
-        }
-
-        .documentSubtitleBack {
-            text-align: center;
-            position: relative;
-            top: 340;
-        }
-
-        .imageLogo {
-            margin-top: 24;
-        }
-
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-        }
-
-        td,
-        th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background: #b4ffc7;
-        }
-
-        @page {
-            size: A4;
-            margin: 0;
-        }
-
-        @media print {
-            .page {
-                margin: 0;
-                border: initial;
-                border-radius: initial;
-                width: initial;
-                /* min-height: initial; */
-                box-shadow: initial;
-                background: initial;
-                page-break-after: always;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<%
-formatNumber = function(value) {
-    return Math.round(value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-}
-%>
+  <% formatNumber = function(value) { return
+  Math.round(value).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.') } %>
 
-<body>
+  <body>
     <!-- Portada -->
     <div class="page">
-        <img class="logoImagePort" src="http://www.accioncircular.com/static/media/logo.c0df2e74.png" />
-        <h1 class="documentTitle">Reporte de reciclaje</h1>
-        <img src="<%=payload.local.customerID.urlLogo%>" style="            
-             position: relative;
-            top: 340;
-            height: 140;
-            margin: auto;
-            display: block;" />
-        <h5 class="documentSubtitle">Sede / Sucursal: <%=payload.local.name%></h5>
-        <h5 class="documentSubtitle">Fecha emisión de reporte: <%=payload.datetimeReport%></h5>
-        <h5 class="documentSubtitle">Reporte de <%=payload.dateRange%> </h5>
-        <img class="prefooterImage" src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/iconos(1).png" />
-        <img class="footerImage" src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png" />
+      <img
+        class="logoImagePort"
+        src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+      />
+      <h1 class="documentTitle">Reporte de reciclaje</h1>
+      <img
+        src="<%=payload.local.customerID.urlLogo%>"
+        style="
+          position: relative;
+          top: 340;
+          height: 140;
+          margin: auto;
+          display: block;
+        "
+      />
+      <h5 class="documentSubtitle">Sede / Sucursal: <%=payload.local.name%></h5>
+      <h5 class="documentSubtitle">
+        Fecha emisión de reporte: <%=payload.datetimeReport%>
+      </h5>
+      <h5 class="documentSubtitle">Reporte de <%=payload.dateRange%></h5>
+      <img
+        class="prefooterImage"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/iconos(1).png"
+      />
+      <img
+        class="footerImage"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+      />
     </div>
     <div class="page">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <img class="logoHeaderImage" src="http://www.accioncircular.com/static/media/logo.c0df2e74.png" />
-                </div>
-            </div>
-            <br />
-            <br />
-            <br />
-            <h1 style="text-align: center;">Material reciclado</h1>
-            <br />
-            <div class="row">
-                <div class="col-sm">
-                    <p style="margin: 1cm">
-                        El siguiente reporte es un resumen del reciclaje realizado por la empresa
-                        <b><%=payload.local.customerID.brand%></b> durante <b><%=payload.dateRange%></b>,
-                        específicamente en su
-                        sucursal/sede de <b><%=payload.local.name%></b>. A continuación se puede ver el
-                        comportamiento actual e histórico de la empresa en términos de kilos y
-                        diversidad de materiales reciclados, además de una interpretación del
-                        impacto ambiental positivo que está generando a través de esta práctica, lo
-                        cual se puede visibilizar en el apartado de Eco-Equivalencias.
-                    </p>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-sm">
-                    <h3 style="text-align: center;">Retiros realizados durante el mes de <%=payload.currentMonth%></h3>
-                    <div style="margin: 1cm">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Día y hora</th>
-                                    <th scope="col">Cantidad de material</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% payload.currentRemovals.forEach(removal => {%>
-                                <tr>
-                                    <td><%=removal.date%></td>
-                                    <td><%=formatNumber(removal.value)%> Kilos</td>
-                                </tr>
-                                <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm">
-                    <h3 style="text-align: center;">Tabla comparativa mes de <%=payload.currentMonth%>,
-                        <%=payload.previusMonth%> y acumulados</h3>
-                    <div style="margin: 1cm">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col"></th>
-                                    <th scope="col"><%=payload.currentMonth%></th>
-                                    <th scope="col">Acumulado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% payload.removals.forEach(material => {%>
-                                <tr>
-                                    <th scope="row"><%=material.name%></th>
-                                    <td><%=formatNumber(material.current)%> Kilos</td>
-                                    <td><%=formatNumber(material.historic)%> Kilos</td>
-                                </tr>
-                                <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <img
+              class="logoHeaderImage"
+              src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+            />
+          </div>
         </div>
+        <br />
+        <br />
+        <br />
+        <h1 style="text-align: center;">Material reciclado</h1>
+        <br />
+        <div class="row">
+          <div class="col-sm">
+            <p style="margin: 1cm; text-align: justify;">
+              El siguiente reporte es un resumen del reciclaje realizado por la
+              empresa
+              <b><%=payload.local.customerID.brand%></b> durante
+              <b><%=payload.dateRange%></b>, específicamente en su sucursal/sede
+              <b><%=payload.local.name%></b>. A continuación se puede ver el
+              comportamiento actual e histórico de la empresa en términos de
+              kilos y diversidad de materiales reciclados, además de una
+              interpretación del impacto ambiental positivo que está generando a
+              través de esta práctica, lo cual se puede visibilizar en el
+              apartado de Eco Equivalencias.
+            </p>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-sm">
+            <h3 style="text-align: center;">
+              Retiros realizados durante el mes de <%=payload.currentMonth%>
+            </h3>
+            <div style="margin: 1cm;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Día y hora</th>
+                    <th scope="col">Cantidad de material</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% payload.currentRemovals.forEach(removal => {%>
+                  <tr>
+                    <td><%=removal.date%></td>
+                    <td><%=formatNumber(removal.value)%> Kilos</td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <h3 style="text-align: center;">
+              Tabla comparativa de materiales mes de <%=payload.currentMonth%> y
+              acumulados
+            </h3>
+            <div style="margin: 1cm;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col"><%=payload.currentMonth%></th>
+                    <th scope="col">Acumulado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% payload.removals.forEach(material => {%>
+                  <tr>
+                    <th scope="row"><%=material.name%></th>
+                    <td><%=formatNumber(material.current)%> Kilos</td>
+                    <td><%=formatNumber(material.historic)%> Kilos</td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="page">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <img class="logoHeaderImage" src="http://www.accioncircular.com/static/media/logo.c0df2e74.png" />
-                </div>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div class="row">
-                <div class="col"></div>
-                <div class="col-10">
-                    <h3 style="text-align: center;">Comparativa mes de <%=payload.currentMonth%> y
-                        <%=payload.previusMonth%> por material</h3>
-                    <br />
-                    <canvas id="barChartComp" width="220" height="150"
-                        style="position: relative; margin: auto"></canvas>
-                </div>
-                <div class="col"></div>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div class="row">
-                <div class="col-6">
-                    <h4 style="text-align: center;">Composición del reciclaje de <%=payload.dateRange%></h4>
-                    <br />
-                    <canvas id="pieChart" width="220" height="150" style="position: relative; margin: auto"></canvas>
-                </div>
-                <div class="col-6">
-                    <h4 style="text-align: center;">Reciclaje mensual y acumulado últimos meses</h4>
-                    <br />
-                    <canvas id="barChartAc" width="220" height="150" style="position: relative; margin: auto"></canvas>
-                </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <img
+              class="logoHeaderImage"
+              src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+            />
+          </div>
         </div>
+        <br />
+        <br />
+        <br />
+        <div class="row">
+          <div class="col"></div>
+          <div class="col-10">
+            <h3 style="text-align: center;">
+              Comparativa mes de <%=payload.currentMonth%> y
+              <%=payload.previusMonth%> por material
+            </h3>
+            <br />
+            <canvas
+              id="barChartComp"
+              width="220"
+              height="150"
+              style="position: relative; margin: auto;"
+            ></canvas>
+          </div>
+          <div class="col"></div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div class="row">
+          <div class="col-6">
+            <h4 style="text-align: center;">
+              Composición del reciclaje de <%=payload.dateRange%>
+            </h4>
+            <br />
+            <canvas
+              id="pieChart"
+              width="220"
+              height="150"
+              style="position: relative; margin: auto;"
+            ></canvas>
+          </div>
+          <div class="col-6">
+            <h4 style="text-align: center;">
+              Reciclaje mensual y acumulado últimos meses
+            </h4>
+            <br />
+            <canvas
+              id="barChartAc"
+              width="220"
+              height="150"
+              style="position: relative; margin: auto;"
+            ></canvas>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="page">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <img class="logoHeaderImage" src="http://www.accioncircular.com/static/media/logo.c0df2e74.png" />
-
-                </div>
-            </div>
-            <br />
-            <br />
-            <h1 style="text-align: center;">Eco equivalencias</h1>
-            <h4 style="text-align: center;"><%=payload.dateRange%></h4>
-            <br />
-            <br />
-            <h3 style="text-align: center;">Eco equivalencias totales de <%=payload.currentMonth%></h3>
-            <br />
-
-            <div class="row">
-                <div class="col-sm">
-                    <img src="https://s3.amazonaws.com/accioncircular.com/resources/gota.png" class="ecoeqImage" />
-                    <br />
-                    <div class="text-center">
-                        <h4 class="mb-0">
-                            <%=formatNumber(payload.ecoEq["PETROL"].current) %> Litros
-                        </h4>
-                        <h6>de petróleo</h6>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <img src="https://s3.amazonaws.com/accioncircular.com/resources/rayo.png" class="ecoeqImage" />
-                    <br />
-                    <div class="text-center">
-                        <h4 class="mb-0">
-                            <%=formatNumber(payload.ecoEq["ENERGY"].current) %> kWatt
-                        </h4>
-                        <h6>de energía</h6>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <img src="https://s3.amazonaws.com/accioncircular.com/resources/fabrica.png" class="ecoeqImage" />
-                    <br />
-                    <div class="text-center">
-                        <h4 class="mb-0"><%=formatNumber(payload.ecoEq["CO2"].current)%> Kilos</h4>
-                        <h6>de CO2</h6>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-sm">
-                    <img src="https://s3.amazonaws.com/accioncircular.com/resources/gota+agua.png" class="ecoeqImage" />
-                    <br />
-                    <div class="text-center">
-                        <h4 class="mb-0">
-                            <%= formatNumber(payload.ecoEq["WATER"].current)%>
-                            Litros</h4>
-                        <h6>de agua</h6>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <img src="https://s3.amazonaws.com/accioncircular.com/resources/arbol.png" class="ecoeqImage" />
-                    <br />
-                    <div class="text-center">
-                        <h4 class="mb-0"><%=formatNumber(payload.ecoEq["TREE"].current)%> Unidades</h4>
-                        <h6>de árboles</h6>
-                    </div>
-                </div>
-                <div class="col-sm">
-                    <img src="https://s3.amazonaws.com/accioncircular.com/resources/balanza.png" class="ecoeqImage" />
-                    <br />
-                    <div class="text-center">
-                        <h4 class="mb-0"><%=formatNumber(payload.total)%> Kilos</h4>
-                        <h6>de material</h6>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div style="margin: 1cm">
-                <h3 style="text-align: center;">Durante el mes de <%=payload.currentMonth%></h3>
-                <br />
-                <ul>
-                    <li>
-                        <p>
-                            Has ahorrado el petróleo necesario para que un vehículo pueda andar
-                            <b><%=formatNumber(payload.ecoEq["PETROL"].current * 7)%> Kilómetros</b>
-                        </p>
-                    </li>
-                    <li>
-                        <p> Has ahorrado la energía necesaria para que una casa pueda funcionar
-                            <b><%=formatNumber(payload.ecoEq["PETROL"].current / 22.5)%> Días</b>
-                        </p>
-                    </li>
-                    <li>
-                        <p>Has aportado en la lucha contra el calentamiento global, evitando la emisión
-                            de <b><%=formatNumber(payload.ecoEq["CO2"].current)%> Kilos</b> de dióxido de carbono a la
-                            atmósfera.
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Has evitado el consumo de <b><%=formatNumber(payload.ecoEq["WATER"].current)%> Litros</b> de
-                            agua
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Has evitado la tala de <b><%=formatNumber(payload.ecoEq["TREE"].current)%> árboles</b>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            Has evitado la disposición de <b><%=formatNumber(payload.total)%> kilos</b> de material
-                            reciclable
-                            en
-                            relleno sanitario o un vertedero.
-                        </p>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <img
+              class="logoHeaderImage"
+              src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+            />
+          </div>
         </div>
+        <br />
+        <br />
+        <h1 style="text-align: center;">Eco Equivalencias</h1>
+        <h4 style="text-align: center;"><%=payload.dateRange%></h4>
+        <br />
+        <br />
+        <h3 style="text-align: center;">
+          Eco Equivalencias totales de <%=payload.currentMonth%>
+        </h3>
+        <br />
+
+        <div class="row">
+          <div class="col-sm">
+            <img
+              src="https://s3.amazonaws.com/accioncircular.com/resources/gota.png"
+              class="ecoeqImage"
+            />
+            <br />
+            <div class="text-center">
+              <h4 class="mb-0">
+                <%=formatNumber(payload.ecoEq["PETROL"].current) %> Litros
+              </h4>
+              <h6>de petróleo</h6>
+            </div>
+          </div>
+          <div class="col-sm">
+            <img
+              src="https://s3.amazonaws.com/accioncircular.com/resources/rayo.png"
+              class="ecoeqImage"
+            />
+            <br />
+            <div class="text-center">
+              <h4 class="mb-0">
+                <%=formatNumber(payload.ecoEq["ENERGY"].current) %> kWatt
+              </h4>
+              <h6>de energía</h6>
+            </div>
+          </div>
+          <div class="col-sm">
+            <img
+              src="https://s3.amazonaws.com/accioncircular.com/resources/fabrica.png"
+              class="ecoeqImage"
+            />
+            <br />
+            <div class="text-center">
+              <h4 class="mb-0">
+                <%=formatNumber(payload.ecoEq["CO2"].current)%> Kilos
+              </h4>
+              <h6>de CO2</h6>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-sm">
+            <img
+              src="https://s3.amazonaws.com/accioncircular.com/resources/gota+agua.png"
+              class="ecoeqImage"
+            />
+            <br />
+            <div class="text-center">
+              <h4 class="mb-0">
+                <%= formatNumber(payload.ecoEq["WATER"].current)%> Litros
+              </h4>
+              <h6>de agua</h6>
+            </div>
+          </div>
+          <div class="col-sm">
+            <img
+              src="https://s3.amazonaws.com/accioncircular.com/resources/arbol.png"
+              class="ecoeqImage"
+            />
+            <br />
+            <div class="text-center">
+              <h4 class="mb-0">
+                <%=formatNumber(payload.ecoEq["TREE"].current)%> Unidades
+              </h4>
+              <h6>de árboles</h6>
+            </div>
+          </div>
+          <div class="col-sm">
+            <img
+              src="https://s3.amazonaws.com/accioncircular.com/resources/balanza.png"
+              class="ecoeqImage"
+            />
+            <br />
+            <div class="text-center">
+              <h4 class="mb-0"><%=formatNumber(payload.total)%> Kilos</h4>
+              <h6>de material</h6>
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <div style="margin: 1cm;">
+          <h3 style="text-align: center;">
+            Durante el mes de <%=payload.currentMonth%>
+          </h3>
+          <br />
+          <ul>
+            <li>
+              <p>
+                Has ahorrado el petróleo necesario para que un vehículo pueda
+                andar
+                <b
+                  ><%=formatNumber(payload.ecoEq["PETROL"].current * 7)%>
+                  Kilómetros</b
+                >
+              </p>
+            </li>
+            <li>
+              <p>
+                Has ahorrado la energía necesaria para que una casa pueda
+                funcionar
+                <b
+                  ><%=formatNumber(payload.ecoEq["PETROL"].current / 22.5)%>
+                  Días</b
+                >
+              </p>
+            </li>
+            <li>
+              <p>
+                Has aportado en la lucha contra el calentamiento global,
+                evitando la emisión de
+                <b><%=formatNumber(payload.ecoEq["CO2"].current)%> Kilos</b> de
+                dióxido de carbono a la atmósfera.
+              </p>
+            </li>
+            <li>
+              <p>
+                Has evitado el consumo de
+                <b><%=formatNumber(payload.ecoEq["WATER"].current)%> Litros</b>
+                de agua
+              </p>
+            </li>
+            <li>
+              <p>
+                Has evitado la tala de
+                <b><%=formatNumber(payload.ecoEq["TREE"].current)%> árboles</b>
+              </p>
+            </li>
+            <li>
+              <p>
+                Has evitado la disposición de
+                <b><%=formatNumber(payload.total)%> kilos</b> de material
+                reciclable en relleno sanitario o un vertedero.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="page">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <img class="logoHeaderImage" src="http://www.accioncircular.com/static/media/logo.c0df2e74.png" />
-                </div>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div class="row">
-                <div class="col-sm">
-                    <h3 style="text-align: center;">Aporte por tipo de material, en eco-equivalencias de
-                        <%=payload.currentMonth%>
-                    </h3>
-                    <p style="margin: 1cm">En esta tabla podrás identificar cuál es el impacto ambiental por cada tipo
-                        de material que estás
-                        reciclando, sobre el ahorro en petróleo, energía y agua, además de cómo reduces tu impacto al
-                        calentamiento global y evitar que nuevos árboles sean talados.</p>
-                    <div style="margin: 1cm">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col"></th>
-                                    <th scope="col">Petróleo</th>
-                                    <th scope="col">Energía</th>
-                                    <th scope="col">CO2</th>
-                                    <th scope="col">Agua</th>
-                                    <th scope="col">Árboles</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% payload.removals.forEach(material => {%>
-                                <tr>
-                                    <th scope="row"><%=material.name%></th>
-                                    <td><%=(formatNumber(material.ecoEq["PETROL"].current))%> Litros</td>
-                                    <td><%=(formatNumber(material.ecoEq["ENERGY"].current))%> kWatt</td>
-                                    <td><%=(formatNumber(material.ecoEq["CO2"].current))%> Kilos</td>
-                                    <td><%=(formatNumber(material.ecoEq["WATER"].current))%> Litros</td>
-                                    <td><%=(formatNumber(material.ecoEq["TREE"].current))%> Unidades</td>
-                                </tr>
-                                <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-sm">
-                    <h3 style="text-align: center;">Eco equivalencias acumuladas</h3>
-                    <p style="margin: 1cm">
-                        La siguiente tabla muestra el total de materias primas ahorradas por <b><%=payload.name%></b>,
-                        desde
-                        <b><%=payload.datetimeFirstRemoval%></b> a la fecha.</p>
-
-                    <div style="margin: 1cm">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col"></th>
-                                    <th scope="col">Petróleo</th>
-                                    <th scope="col">Energía</th>
-                                    <th scope="col">CO2</th>
-                                    <th scope="col">Agua</th>
-                                    <th scope="col">Árboles</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">Acumulado</th>
-                                    <td><%=(formatNumber(payload.ecoEq["PETROL"].historic))%> Litros</td>
-                                    <td><%=(formatNumber(payload.ecoEq["ENERGY"].historic))%> kWatt</td>
-                                    <td><%=(formatNumber(payload.ecoEq["CO2"].historic))%> Kilos</td>
-                                    <td><%=(formatNumber(payload.ecoEq["WATER"].historic))%> Litros</td>
-                                    <td><%=(formatNumber(payload.ecoEq["TREE"].historic))%> Unidades</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <img
+              class="logoHeaderImage"
+              src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+            />
+          </div>
         </div>
+        <br />
+        <br />
+        <br />
+        <div class="row">
+          <div class="col-sm">
+            <h3 style="text-align: center;">
+              Aporte por tipo de material, en eco equivalencias de
+              <%=payload.currentMonth%>
+            </h3>
+            <p style="margin: 1cm;">
+              En esta tabla podrás identificar cuál es el impacto ambiental por
+              cada tipo de material que estás reciclando, sobre el ahorro en
+              petróleo, energía y agua, además de cómo reduces tu impacto al
+              calentamiento global y evitar que nuevos árboles sean talados.
+            </p>
+            <div style="margin: 1cm;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Petróleo</th>
+                    <th scope="col">Energía</th>
+                    <th scope="col">CO2</th>
+                    <th scope="col">Agua</th>
+                    <th scope="col">Árboles</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% payload.removals.forEach(material => {%>
+                  <tr>
+                    <th scope="row"><%=material.name%></th>
+                    <td>
+                      <%=(formatNumber(material.ecoEq["PETROL"].current))%>
+                      Litros
+                    </td>
+                    <td>
+                      <%=(formatNumber(material.ecoEq["ENERGY"].current))%>
+                      kWatt
+                    </td>
+                    <td>
+                      <%=(formatNumber(material.ecoEq["CO2"].current))%> Kilos
+                    </td>
+                    <td>
+                      <%=(formatNumber(material.ecoEq["WATER"].current))%>
+                      Litros
+                    </td>
+                    <td>
+                      <%=(formatNumber(material.ecoEq["TREE"].current))%>
+                      Unidades
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-sm">
+            <h3 style="text-align: center;">Eco Equivalencias acumuladas</h3>
+            <p style="margin: 1cm;">
+              La siguiente tabla muestra el total de materias primas ahorradas
+              por <b><%=payload.name%></b>, desde
+              <b><%=payload.datetimeFirstRemoval%></b> a la fecha.
+            </p>
+
+            <div style="margin: 1cm;">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Petróleo</th>
+                    <th scope="col">Energía</th>
+                    <th scope="col">CO2</th>
+                    <th scope="col">Agua</th>
+                    <th scope="col">Árboles</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Acumulado</th>
+                    <td>
+                      <%=(formatNumber(payload.ecoEq["PETROL"].historic))%>
+                      Litros
+                    </td>
+                    <td>
+                      <%=(formatNumber(payload.ecoEq["ENERGY"].historic))%>
+                      kWatt
+                    </td>
+                    <td>
+                      <%=(formatNumber(payload.ecoEq["CO2"].historic))%> Kilos
+                    </td>
+                    <td>
+                      <%=(formatNumber(payload.ecoEq["WATER"].historic))%>
+                      Litros
+                    </td>
+                    <td>
+                      <%=(formatNumber(payload.ecoEq["TREE"].historic))%>
+                      Unidades
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="page">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    <img class="logoHeaderImage"
-                        src="https://s3.amazonaws.com/accioncircular.com/resources/sello_latinoamerica_verde.png" />
-                </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <img
+              class="logoHeaderImage"
+              src="https://s3.amazonaws.com/accioncircular.com/resources/sello_latinoamerica_verde.png"
+            />
+          </div>
         </div>
+      </div>
 
-        <img class="logoImageBack" src="http://www.accioncircular.com/static/media/logo.c0df2e74.png" />
-        <h1 class="documentTitleBack">Reporte de reciclaje digital</h1>
-        <img src="<%=payload.local.customerID.urlLogo%>" style="            
-            position: relative;
-            top: 320;
-            height: 140;
-            margin: auto;
-            display: block;" />
-        <h5 class="documentSubtitleBack">Sede / Sucursal: <%=payload.local.name%></h5>
-        <h5 class="documentSubtitleBack">Fecha emisión de reporte: <%=payload.datetimeReport%></h5>
-        <h5 class="documentSubtitleBack">Reporte de <%=payload.dateRange%> </h5>
-        <img src="<%=payload.urlQr%>" style="
-            position: relative;
-            top: 360;
-            height: 280;
-            margin: auto;
-            display: block;" />
-        <img class="footerImage" src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png" />
-
+      <img
+        class="logoImageBack"
+        src="http://www.accioncircular.com/static/media/logo.c0df2e74.png"
+      />
+      <h1 class="documentTitleBack">Reporte de reciclaje digital</h1>
+      <img
+        src="<%=payload.local.customerID.urlLogo%>"
+        style="
+          position: relative;
+          top: 320;
+          height: 140;
+          margin: auto;
+          display: block;
+        "
+      />
+      <h5 class="documentSubtitleBack">
+        Sede / Sucursal: <%=payload.local.name%>
+      </h5>
+      <h5 class="documentSubtitleBack">
+        Fecha emisión de reporte: <%=payload.datetimeReport%>
+      </h5>
+      <h5 class="documentSubtitleBack">Reporte de <%=payload.dateRange%></h5>
+      <img
+        src="<%=payload.urlQr%>"
+        style="
+          position: relative;
+          top: 360;
+          height: 280;
+          margin: auto;
+          display: block;
+        "
+      />
+      <img
+        class="footerImage"
+        src="https://s3.us-east-2.amazonaws.com/www.accioncircular.com/mailing(2).png"
+      />
     </div>
 
     <p id="pieChartData" hidden><%= payload.pieChartData %></p>
     <p id="barChartDataComp" hidden><%= payload.barChartDataComp %></p>
     <p id="barChartDataAc" hidden><%= payload.barChartDataAc %></p>
-
-</body>
-
+  </body>
 </html>
 
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.5.1.min.js"
+  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+  crossorigin="anonymous"
+></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        // Grafico de pie
-        var ctx = document.getElementById('pieChart').getContext('2d');
-        var pieChartData = $("#pieChartData").html();
-        console.log(pieChartData)
-        var myChart = new Chart(ctx, {
-            type: "pie",
-            data: JSON.parse(pieChartData),
-            options: {
-                showDatapoints: true,
-                responsive: true,
+  $(document).ready(function () {
+    // Grafico de pie
+    var ctx = document.getElementById("pieChart").getContext("2d");
+    var pieChartData = $("#pieChartData").html();
+    console.log(pieChartData);
+    var myChart = new Chart(ctx, {
+      type: "pie",
+      data: JSON.parse(pieChartData),
+      options: {
+        showDatapoints: true,
+        responsive: true,
 
-                legend: {
-                    display: true,
-                    position: "top",
-                    labels: {
-                        fontSize: 14,
-                        boxWidth: 10,
-                    },
-                },
+        legend: {
+          display: true,
+          position: "top",
+          labels: {
+            fontSize: 14,
+            boxWidth: 10,
+          },
+        },
+      },
+    });
+
+    // Grafico de barras comparativo
+    var ctx = document.getElementById("barChartComp").getContext("2d");
+    var barChartDataComp = $("#barChartDataComp").html();
+    var myChart = new Chart(ctx, {
+      type: "bar",
+      data: JSON.parse(barChartDataComp),
+      options: {
+        responsive: true,
+        animation: {
+          onComplete: function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
+
+            ctx.font = Chart.helpers.fontString(
+              Chart.defaults.global.defaultFontSize,
+              Chart.defaults.global.defaultFontStyle,
+              Chart.defaults.global.defaultFontFamily
+            );
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                ctx.fillText(data, bar._model.x, bar._model.y - 5);
+              });
+            });
+          },
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                fontSize: 14,
+                stretch: 35,
+              },
+              gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Kilos de material",
+              },
             },
-        });
+          ],
+          xAxes: [
+            {
+              ticks: {
+                fontSize: 14,
+                stretch: 40,
+              },
 
-        // Grafico de barras comparativo
-        var ctx = document.getElementById('barChartComp').getContext('2d');
-        var barChartDataComp = $("#barChartDataComp").html();
-        var myChart = new Chart(ctx, {
-            type: "bar",
-            data: JSON.parse(barChartDataComp),
-            options: {
-                responsive: true,
-                "animation": {
-                    "onComplete": function () {
-                        var chartInstance = this.chart,
-                            ctx = chartInstance.ctx;
-
-                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle, Chart.defaults.global
-                            .defaultFontFamily);
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'bottom';
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var data = dataset.data[index];
-                                ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                            });
-                        });
-                    }
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            fontSize: 14,
-                            stretch: 35
-                        },
-                        gridLines: {
-                            color: "rgba(0, 0, 0, 0)",
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Kilos de material",
-                        },
-                    }, ],
-                    xAxes: [{
-                        ticks: {
-                            fontSize: 14,
-                            stretch: 40
-                        },
-
-                        gridLines: {
-                            color: "rgba(0, 0, 0, 0)",
-                        }
-                    }],
-                },
-                legend: {
-                    labels: {
-                        color: "rgba(255, 255, 255, 1)",
-                        fontSize: 14,
-                        stretch: 35
-                    }
-                },
+              gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+              },
             },
-        });
+          ],
+        },
+        legend: {
+          labels: {
+            color: "rgba(255, 255, 255, 1)",
+            fontSize: 14,
+            stretch: 35,
+          },
+        },
+      },
+    });
 
-        // Grafico de barras acumulativo
-        var ctx = document.getElementById('barChartAc').getContext('2d');
-        var barChartDataAc = $("#barChartDataAc").html();
-        var myChart = new Chart(ctx, {
-            type: "bar",
-            data: JSON.parse(barChartDataAc),
-            options: {
-                "animation": {
-                    "onComplete": function () {
-                        var chartInstance = this.chart,
-                            ctx = chartInstance.ctx;
+    // Grafico de barras acumulativo
+    var ctx = document.getElementById("barChartAc").getContext("2d");
+    var barChartDataAc = $("#barChartDataAc").html();
+    var myChart = new Chart(ctx, {
+      type: "bar",
+      data: JSON.parse(barChartDataAc),
+      options: {
+        animation: {
+          onComplete: function () {
+            var chartInstance = this.chart,
+              ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle, Chart.defaults.global
-                            .defaultFontFamily);
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'bottom';
+            ctx.font = Chart.helpers.fontString(
+              Chart.defaults.global.defaultFontSize,
+              Chart.defaults.global.defaultFontStyle,
+              Chart.defaults.global.defaultFontFamily
+            );
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
 
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var data = dataset.data[index];
-                                ctx.fillText(data, bar._model.x, bar._model.y - 5);
-                            });
-                        });
-                    }
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            fontSize: 14,
-                            stretch: 35,
-                            beginAtZero: true
+            this.data.datasets.forEach(function (dataset, i) {
+              var meta = chartInstance.controller.getDatasetMeta(i);
+              meta.data.forEach(function (bar, index) {
+                var data = dataset.data[index];
+                ctx.fillText(data, bar._model.x, bar._model.y - 5);
+              });
+            });
+          },
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                fontSize: 14,
+                stretch: 35,
+                beginAtZero: true,
+              },
+              gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+              },
+              scaleLabel: {
+                display: true,
+                labelString: "Kilos de material",
+              },
+            },
+          ],
+          xAxes: [
+            {
+              ticks: {
+                fontSize: 14,
+                stretch: 40,
+              },
 
-                        },
-                        gridLines: {
-                            color: "rgba(0, 0, 0, 0)",
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Kilos de material",
-                        },
-                    }, ],
-                    xAxes: [{
-                        ticks: {
-                            fontSize: 14,
-                            stretch: 40
-                        },
-
-                        gridLines: {
-                            color: "rgba(0, 0, 0, 0)",
-                        }
-                    }],
-                },
-            }
-        })
-    })
+              gridLines: {
+                color: "rgba(0, 0, 0, 0)",
+              },
+            },
+          ],
+        },
+      },
+    });
+  });
 </script>

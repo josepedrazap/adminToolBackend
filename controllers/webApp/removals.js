@@ -1,6 +1,5 @@
 const Removals = require("../../models/removals");
 const Locals = require("../../models/locals");
-const Materials = require("../../models/materials");
 const ImageUpload = require("../../services/imageUpload.js");
 const removalsQ = require("../../queries/removalsQueries");
 

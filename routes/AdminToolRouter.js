@@ -82,7 +82,7 @@ router.get("/auction/confirm", auctionController.confirm);
 
 //customers
 router.post("/customers", authAdmin, customerController.create);
-router.get("/customers", authAdmin, customerController.retrieve);
+router.get("/customers", customerController.retrieve);
 router.patch("/customers", authAdmin, customerController.update);
 router.delete("/customers", authAdmin, customerController.delete);
 router.get("/customers/stats", authAdmin, customerController.stats);

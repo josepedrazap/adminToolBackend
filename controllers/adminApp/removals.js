@@ -107,6 +107,7 @@ exports.getDataCreateRemoval = async (req, res) => {
 };
 
 exports.patchRemoval = async (req, res) => {
+  console.log(req.body);
   var removal = null;
 
   var data = {
